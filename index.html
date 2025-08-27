@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pomáháme dětem v Jemenu prostřednictvím prodeje náramků. Každý náramek = pomoc dětem v nouzi.">
+  <title>Děti dětem – Pomáháme tam, kde dětství není samozřejmostí</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+  <!-- Animated background -->
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  
+  <!-- Progress bar -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+  
+  <!-- Back to top button -->
+  <button id="toTop" aria-label="Zpět nahoru">↑</button>
+  
+  <!-- Navigace -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="checkout.html">Objednávka &amp; QR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero sekce -->
+  <section class="hero">
+    <div class="hero-card">
+      <h1>Pomáháme tam, kde dětství není samozřejmostí</h1>
+      <p>Každý dar mění životy dětí a jejich rodin. Přidejte se k nám a tvořte naději.</p>
+      <a href="eshop.html" class="btn-primary">Pomoci & Nakoupit</a>
+    </div>
+  </section>
+
+  <!-- Full-width stats bar -->
+  <section class="stats-bar" id="statsBar">
+    <div class="stats-bar-inner">
+      <div class="stat-box">
+        <div class="stat-value" id="statMeals">—</div>
+        <div class="stat-label">porcí jídla</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="statBracelets">—</div>
+        <div class="stat-label">náramků</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="statOrders">—</div>
+        <div class="stat-label">objednávek</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intro sekce -->
+  <section class="card-section intro">
+    <div class="card-wrapper">
+      <div class="card-image">
+        <img src="images/DSC00294.png" alt="Pomoc dětem v Jemenu" loading="lazy">
+      </div>
+      <div class="card-content">
+        <h2>Pomůžete i vy?</h2>
+        <p>
+          Pomáháme dětem, které nemají každý den krásný a bezstarostný jako většina z nás. 
+          Této situaci se již šest let věnuje projekt <strong>Pomůžu jak můžu</strong>, 
+          který podporuje maminky a děti v Jemenu, aby se alespoň najedly.
+        </p>
+        <a href="onas.html" class="btn-secondary">Zjistit víc</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission sekce -->
+  <section class="card-section mission">
+    <div class="card-wrapper reverse">
+      <div class="card-image">
+        <img src="images/DSC00234.webp" alt="Děti dětem projekt" loading="lazy">
+      </div>
+      <div class="card-content">
+        <h2>Děti dětem – každý náš produkt pomáhá</h2>
+        <p>
+          Pomůžu jak můžu se věnuje pomoci dětem v Jemenu už šest let.
+          My, projekt Děti dětem, chceme přispět svým dílem — a právě proto jsme vytvořili produkty, 
+          jejichž koupí pomáháte i vy.
+        </p>
+        <a href="onas.html" class="btn-secondary">Zjistit víc</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact sekce -->
+  <section class="card-section impact">
+    <div class="card-wrapper">
+      <div class="card-image">
+        <img src="images/DSC00278.webp" alt="Úsměv dětí" loading="lazy">
+      </div>
+      <div class="card-content">
+        <h2>Jídlo. Úsměv. Úleva</h2>
+        <p>
+          Díky vaší podpoře mohou tyto děti alespoň na chvíli zapomenout na těžkosti. 
+          Jedno teplé jídlo může znamenat víc, než si dovedeme představit – nejen fyzické nasycení, 
+          ale i šanci prožít obyčejný okamžik dětství.
+        </p>
+        <a href="onas.html" class="btn-secondary">Zjistit víc</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="call-to-action glass-card">
+    <h2>Pomáhej s námi</h2>
+    <p>Každý dar má smysl. Ať už přispějete finančně, sdílíte náš příběh, nebo pomůžete jiným způsobem – tvoříte naději.</p>
+    <p><strong>📦 Každý balíček jídla = jeden den naděje.</strong></p>
+    <p><strong>❤️ Každý úsměv = důkaz, že to má cenu.</strong></p>
+    <a href="eshop.html" class="btn-primary">Nakoupit & Pomoci</a>
+  </section>
+
+  <!-- Produkty sekce -->
+  <section class="products-section">
+    <h2>Naše produkty</h2>
+    <p class="muted">Každý náramek je ručně vyráběný s láskou a každý kus pomáhá dětem v nouzi.</p>
+    
+    <div class="products-grid">
+      <div class="product-card glass-card">
+        <img src="images/BCFQE9447.webp" alt="Náramek lásky" loading="lazy">
+        <h3>Náramek lásky</h3>
+        <p>Elegantní náramek s jemným designem. Každý zakoupený kus pomáhá dětem.</p>
+        <a href="eshop.html" class="btn-primary">Koupit</a>
+      </div>
+      
+      <div class="product-card glass-card">
+        <img src="images/CJAJE7328.webp" alt="Náramek naděje" loading="lazy">
+        <h3>Náramek naděje</h3>
+        <p>Každý náramek symbolizuje podporu a naději pro děti v nouzi.</p>
+        <a href="eshop.html" class="btn-primary">Koupit</a>
+      </div>
+      
+      <div class="product-card glass-card">
+        <img src="images/DMUC7072.webp" alt="Náramek radosti" loading="lazy">
+        <h3>Náramek radosti</h3>
+        <p>Veselý design, který rozzáří den – pro vás i pro děti.</p>
+        <a href="eshop.html" class="btn-primary">Koupit</a>
+      </div>
+      
+      <div class="product-card glass-card">
+        <img src="images/DZSNE2447.webp" alt="Náramek přátelství" loading="lazy">
+        <h3>Náramek přátelství</h3>
+        <p>Skvělý dárek pro vaše blízké – a pomoc těm, kteří to nejvíce potřebují.</p>
+        <a href="eshop.html" class="btn-primary">Koupit</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Informace o pomoci -->
+  <section class="products glass-card">
+    <h2>Jak můžete pomoci</h2>
+    <p>
+      Pokud se vám naše produkty nelíbí, ale přesto chcete pomoci, můžete svou podporu poslat přímo organizaci <strong>Pomůžu jak můžu</strong>.
+    </p>
+    <p>
+      Máte nápad na jiný design náramku, než jaký vidíte na našem e-shopu? 
+      Rádi vám vytvoříme náramek na míru – podle vašich představ.
+    </p>
+    <a href="eshop.html" class="btn-primary">Navštívit e-shop</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+
+  <!-- Skripty -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+  <script src="ornament-bg.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

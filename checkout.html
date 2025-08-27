@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objednávka & QR platba — Děti dětem</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <meta name="description" content="Rychlá objednávka s QR platbou. Děti dětem - každý náramek pomáhá dětem v nouzi.">
+</head>
+<body class="checkout-page">
+  <!-- Animated background -->
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  
+  <!-- Navigace -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a class="badge" href="checkout.html">Objednávka & QR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="checkout-wrap glass-card">
+    <h1>Objednávka &amp; QR platba</h1>
+    <p class="muted">Vyplňte kontaktní údaje a částku. Po odeslání vygenerujeme QR platbu (standard <span class="mono">SPD</span>) a objednávku odešleme.</p>
+
+    <form id="orderForm" class="form-grid" autocomplete="on">
+      <!-- Doručovací údaje -->
+      <div class="delivery-section">
+        <h3>Doručovací údaje</h3>
+        <div class="delivery-grid">
+          <div class="delivery-field">
+            <label>Jméno a příjmení</label>
+            <input name="customer_name" required placeholder="Jan Novák">
+          </div>
+          <div class="delivery-field">
+            <label>E-mail pro zaslání QR</label>
+            <input type="email" name="customer_email" required placeholder="jan.novak@email.cz">
+          </div>
+          <div class="delivery-field">
+            <label>Telefon</label>
+            <input type="tel" name="customer_phone" required placeholder="+420 777 123 456">
+          </div>
+          <div class="delivery-field">
+            <label>Ulice a č.p.</label>
+            <input name="address_line" required placeholder="Hlavní 123">
+          </div>
+          <div class="delivery-field">
+            <label>Město</label>
+            <input name="address_city" required placeholder="Praha">
+          </div>
+          <div class="delivery-field">
+            <label>PSČ</label>
+            <input name="address_zip" required placeholder="11000" pattern="\d{3}\s?\d{2}">
+          </div>
+          <div class="delivery-field">
+            <label>Poznámka (nepovinné)</label>
+            <input name="note" placeholder="Poznámka pro doručení">
+          </div>
+        </div>
+
+        <label class="agree">
+          <input type="checkbox" name="agree" required>
+          Souhlasím s <a href="obchodni-podminky.html" target="_blank" rel="noopener">obchodními podmínkami</a>.
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="amount">Částka k zaplacení (CZK)</label>
+        <input id="amount" name="amount" type="number" required min="1" step="1" placeholder="250" />
+        <small class="help">Pokud zboží nemá pevnou cenu, zadejte dohodnutou částku.</small>
+      </div>
+
+      <div class="field">
+        <button class="btn-primary" type="submit">Odeslat objednávku & QR</button>
+      </div>
+    </form>
+
+    <!-- Rekapitulace košíku s obrázky -->
+    <div id="cartSummary" class="glass-card summary-card" style="margin:16px 0;padding:16px;display:none">
+      <h2>Rekapitulace košíku</h2>
+      <div id="cartLines" class="summary-list"></div>
+      <p class="summary-total">Celkem: <strong id="cartTotal">0 Kč</strong> <span class="badge">z košíku</span></p>
+      <button type="button" class="btn-secondary" onclick="Cart.open()">Upravit košík</button>
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="qr-box">
+      <h3>QR platba</h3>
+      <div id="qrCode" class="qr-preview"></div>
+      <p class="sticky-help">📱 Naskenujte QR kód mobilní aplikací vaší banky</p>
+    </div>
+
+    <hr class="hr">
+
+    <div class="note">
+      <p><strong>Poznámka:</strong> Po odeslání objednávky obdržíte potvrzení e-mailem. Platba se zpracuje po připsání na transparentní účet.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_?igsh=MW4zempudXk4Y2hoMQ==" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+  
+  <script src="ornament-bg.js" defer></script>
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="checkout.js"></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

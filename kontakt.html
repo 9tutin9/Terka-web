@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt — Děti dětem</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <meta name="description" content="Kontakt — Děti dětem. Ozvěte se nám s dotazy ohledně našich produktů nebo pomoci.">
+</head>
+<body>
+  <!-- Animated background -->
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  
+  <!-- Navigace -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="checkout.html">Objednávka &amp; QR</a></li>
+      </ul>
+    </div>
+  </nav>
+    
+  <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
+  
+    <section class="glass-card">
+      <h1>Kontakt</h1>
+      <p>Ozvěte se nám. Obvykle odpovídáme do 24 hodin.</p>
+      
+      <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px">
+        <div class="field">
+          <label for="k-name">Jméno</label>
+          <input id="k-name" placeholder="Jan Novák" style="width:100%;padding:12px;border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:inherit">
+        </div>
+        
+        <div class="field">
+          <label for="k-email">E‑mail</label>
+          <input id="k-email" type="email" placeholder="jan@example.cz" style="width:100%;padding:12px;border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:inherit">
+        </div>
+        
+        <div class="field" style="grid-column:1/-1">
+          <label for="k-msg">Zpráva</label>
+          <textarea id="k-msg" rows="6" placeholder="S čím vám můžeme pomoci?" style="width:100%;padding:12px;border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        
+        <div class="field" style="grid-column:1/-1">
+          <a id="mailto-contact" class="btn-primary" href="#" style="display:inline-flex;align-items:center;gap:8px">
+            📧 Odeslat e‑mailem
+          </a>
+          <small class="muted" style="display:block;margin-top:12px">
+            Kliknutím se otevře váš e‑mail klient s předvyplněnou zprávou.
+          </small>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass-card" style="margin-top:32px">
+      <h2>Další způsoby kontaktu</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px">
+        <div style="text-align:center;padding:20px;background:rgba(0,119,182,0.1);border-radius:16px">
+          <h3 style="margin-bottom:12px">📱 Sociální sítě</h3>
+          <p>Sledujte nás na Instagramu a TikToku pro aktuální informace a příběhy.</p>
+          <div style="margin-top:16px">
+            <a href="https://www.instagram.com/deti_detem_" target="_blank" rel="noopener" class="btn-secondary" style="margin-right:8px">Instagram</a>
+            <a href="https://www.tiktok.com/@deti_detem" target="_blank" rel="noopener" class="btn-secondary">TikTok</a>
+          </div>
+        </div>
+        
+        <div style="text-align:center;padding:20px;background:rgba(255,183,3,0.1);border-radius:16px">
+          <h3 style="margin-bottom:12px">💌 E-mail</h3>
+          <p>Pro obchodní dotazy a spolupráci nás kontaktujte přímo e-mailem.</p>
+          <p style="margin-top:12px;font-weight:600">stevenuserusrex@gmail.com</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // mailto předvyplnění
+      (function(){
+        const a = document.getElementById('mailto-contact');
+        function make(){
+          const name = (document.getElementById('k-name').value||'').trim();
+          const email = (document.getElementById('k-email').value||'').trim();
+          const msg = (document.getElementById('k-msg').value||'').trim();
+          const subject = 'Dotaz z webu Děti dětem';
+          const body = `Jméno: ${name}\nE-mail: ${email}\n\n${msg}`;
+          a.href = `mailto:stevenuserusrex@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+        document.addEventListener('input', make);
+        make();
+      })();
+    </script>
+
+  </main>
+  
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_?igsh=MW4zempudXk4Y2hoMQ==" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+  
+  <script src="ornament-bg.js" defer></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

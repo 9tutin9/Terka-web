@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O nás — Děti dětem</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <meta name="description" content="O nás — Děti dětem. Zjistěte více o našem projektu pomoci dětem v nouzi.">
+</head>
+<body>
+  <!-- Animated background -->
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  
+  <!-- Navigace -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="checkout.html">Objednávka &amp; QR</a></li>
+      </ul>
+    </div>
+  </nav>
+    
+  <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
+  
+    <section class="glass-card">
+      <h1>Kdo jsme</h1>
+      <p>„Děti dětem" je projekt, který spojuje tvorbu, komunitu a podporu. Věříme, že i malé nápady mohou mít velký dopad.</p>
+      <p>Naše mise je jednoduchá: vytvářet krásné produkty, které zároveň pomáhají dětem v nouzi. Každý náramek, který si koupíte, přispívá na pomoc dětem v Jemenu.</p>
+    </section>
+
+    <section class="glass-card">
+      <h2>Naše mise</h2>
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1);">🎨 Vytvářet kvalitní produkty s příběhem a smyslem</li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1);">💝 Transparentně podporovat dobročinné aktivity</li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1);">🤝 Bavit se tvořením a zapojovat komunitu</li>
+        <li style="padding: 0.5rem 0;">❤️ Přinášet naději tam, kde je jí nejvíce zapotřebí</li>
+      </ul>
+    </section>
+
+    <section class="glass-card">
+      <h2>Historie v bodech</h2>
+      <ol style="padding-left: 1.5rem;">
+        <li style="padding: 0.5rem 0;"><strong>2023</strong> — první návrhy a prototypy náramků</li>
+        <li style="padding: 0.5rem 0;"><strong>2024</strong> — spuštění e-shopu a první prodeje</li>
+        <li style="padding: 0.5rem 0;"><strong>2025</strong> — automatizace plateb přes QR kódy a rozšíření sortimentu</li>
+      </ol>
+    </section>
+
+    <section class="glass-card">
+      <h2>Jak to funguje</h2>
+      <p>Když si koupíte náš náramek:</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <div style="text-align: center; padding: 1rem; background: rgba(0,119,182,0.1); border-radius: 12px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">1. Nákup</h3>
+          <p style="font-size: 0.9rem;">Vyberete si náramek a přidáte do košíku</p>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: rgba(255,183,3,0.1); border-radius: 12px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2. Platba</h3>
+          <p style="font-size: 0.9rem;">Zaplatíte přes QR kód nebo bankovní převod</p>
+        </div>
+        <div style="text-align: center; padding: 1rem; background: rgba(16,185,129,0.1); border-radius: 12px;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3. Pomoc</h3>
+          <p style="font-size: 0.9rem;">Vaše peníze pomohou dětem v Jemenu</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_?igsh=MW4zempudXk4Y2hoMQ==" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+  
+  <script src="ornament-bg.js" defer></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>

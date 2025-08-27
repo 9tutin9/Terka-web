@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-shop — Děti dětem</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  
+  <meta name="description" content="E-shop s náramky — Děti dětem. Každý náramek pomáhá dětem v nouzi.">
+</head>
+<body>
+  <!-- Animated background -->
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  
+  <!-- Navigace -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="checkout.html">Objednávka &amp; QR</a></li>
+      </ul>
+    </div>
+  </nav>
+    
+  <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
+  
+    <section class="glass-card products-section">
+      <h1>E-shop s náramky</h1>
+      <p class="muted">Vyberte si z našich náramků. Kliknutím na „Do košíku" se položka přidá a můžete ihned přejít k objednávce.</p>
+      
+      <div class="products-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px">
+        
+        <div class="product-card glass-card reveal">
+          <img src="images/BCFQE9447.webp" alt="Náramek lásky" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px">
+          <h3>Náramek lásky</h3>
+          <p class="muted">Elegantní náramek s jemným designem. Každý kus pomáhá dětem.</p>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
+            <input id="qty-love" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+            <button class="btn-primary"
+              data-add-to-cart
+              data-id="naramek-lasky"
+              data-name="Náramek lásky"
+              data-price="349"
+              data-image="images/BCFQE9447.webp"
+              data-qty-selector="#qty-love">Do košíku (349 Kč)</button>
+          </div>
+        </div>
+
+        <div class="product-card glass-card reveal">
+          <img src="images/CJAJE7328.webp" alt="Náramek naděje" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px">
+          <h3>Náramek naděje</h3>
+          <p class="muted">Symbol podpory a naděje pro děti v nouzi.</p>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
+            <input id="qty-hope" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+            <button class="btn-primary"
+              data-add-to-cart
+              data-id="naramek-nadeje"
+              data-name="Náramek naděje"
+              data-price="329"
+              data-image="images/CJAJE7328.webp"
+              data-qty-selector="#qty-hope">Do košíku (329 Kč)</button>
+          </div>
+        </div>
+
+        <div class="product-card glass-card reveal">
+          <img src="images/DMUC7072.webp" alt="Náramek radosti" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px">
+          <h3>Náramek radosti</h3>
+          <p class="muted">Veselý design, který rozzáří den – pro vás i pro děti.</p>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
+            <input id="qty-joy" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+            <button class="btn-primary"
+              data-add-to-cart
+              data-id="naramek-radosti"
+              data-name="Náramek radosti"
+              data-price="299"
+              data-image="images/DMUC7072.webp"
+              data-qty-selector="#qty-joy">Do košíku (299 Kč)</button>
+          </div>
+        </div>
+
+        <div class="product-card glass-card reveal">
+          <img src="images/DZSNE2447.webp" alt="Náramek přátelství" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px">
+          <h3>Náramek přátelství</h3>
+          <p class="muted">Skvělý dárek – a pomoc těm, kteří to nejvíce potřebují.</p>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
+            <input id="qty-friend" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+            <button class="btn-primary"
+              data-add-to-cart
+              data-id="naramek-pratelstvi"
+              data-name="Náramek přátelství"
+              data-price="319"
+              data-image="images/DZSNE2447.webp"
+              data-qty-selector="#qty-friend">Do košíku (319 Kč)</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_?igsh=MW4zempudXk4Y2hoMQ==" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+  
+  <script src="ornament-bg.js" defer></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>
