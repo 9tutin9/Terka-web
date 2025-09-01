@@ -7,28 +7,28 @@
 
   // ==== NASTAVENÍ (klidně si pohrát) ====
   const CFG = {
-    COUNT: 8,              // počet „blobů“ (základ)
-    SPEED: 0.18,           // rychlost pohybu blobů
-    PARALLAX: 0.9,         // jak moc reagují na myš (0–1.5…)
-    PULSE_STRENGTH: 0.55,  // jak moc se zvětší poblíž myši (0–1)
-    PULSE_RADIUS: 280,     // dosah pulzu od kurzoru (px)
-    CLICK_SPAWN: 2,        // kolik „kapek“ vytvořit při kliknutí
-    CLICK_GROWTH: 1.25,    // rychlost rozpínání kapek
-    ALPHA_BASE: 0.30,      // základní viditelnost blobů (0–1)
-    ALPHA_NEAR: 0.55,      // viditelnost blobů poblíž myši
-    MAX_DPR: 2             // limit pro zařízení s vysokým DPI
+    COUNT: 8,            
+    SPEED: 0.18,
+    PARALLAX: 1.5, 
+    PULSE_STRENGTH: 0.55,  
+    PULSE_RADIUS: 280,  
+    CLICK_SPAWN: 2,
+    CLICK_GROWTH: 1.25, 
+    ALPHA_BASE: 0.30,
+    ALPHA_NEAR: 0.55,
+    MAX_DPR: 2 
   };
 
   // Ladí se k tvým barvám webu (#0077b6, #e6a639ff, #ffe45f, #ffb703)
   const palette = [
-  [217, 148, 95],   // písek
-  [242, 177, 121],  // měkká meruňková
-  [255, 205, 178],  // pastelová růžová
-  [255, 183, 3]     // teplá oranžová
+  [217, 148, 95],  
+  [242, 177, 121], 
+  [255, 205, 178], 
+  [255, 183, 3]
 ];
   let W=0, H=0, DPR = Math.min(window.devicePixelRatio || 1, CFG.MAX_DPR);
   let blobs = [];
-  let drops = []; // klikací kapky
+  let drops = []; 
   let RAF = 0;
 
   const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;

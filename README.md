@@ -90,22 +90,6 @@ Terka-web/
 - Hover efekty
 - Touch interakce
 
-## 🚀 Instalace a spuštění
-
-1. **Stáhněte** všechny soubory do složky
-2. **Otevřete** `index.html` v prohlížeči
-3. **Pro lokální server** použijte:
-   ```bash
-   # Python 3
-   python -m http.server 8000
-   
-   # Node.js
-   npx serve .
-   
-   # PHP
-   php -S localhost:8000
-   ```
-
 ## ⚙️ Konfigurace
 
 ### Google Fonts
@@ -114,11 +98,6 @@ Fonty jsou automaticky načítány z Google Fonts CDN.
 ### Košík
 Košík používá LocalStorage pro perzistenci dat.
 
-### Checkout
-Pro checkout funkcionalitu upravte `config.js`:
-- IBAN údaje
-- EmailJS nastavení
-- Google Sheets webhook
 
 ## 📱 Responzivní breakpointy
 

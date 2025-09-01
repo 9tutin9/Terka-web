@@ -1,4 +1,4 @@
-// cart.js — jednoduchý košík (localStorage) + vysouvací panel + propojení s checkoutem
+
 (function(){
   const CART_KEY = "cart_v1";
   const fmt = (n)=> new Intl.NumberFormat('cs-CZ', { style:'currency', currency:'CZK', maximumFractionDigits: 0 }).format(n);

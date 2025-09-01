@@ -230,12 +230,24 @@
         submitBtn.style.color = '#111';
         submitBtn.disabled = true;
       }
+      return true;
     } catch (error) {
       console.error("Chyba při odesílání objednávky:", error);
       showToast('Chyba při odesílání objednávky', 'error');
       const submitBtn = document.querySelector('#orderForm button[type="submit"]');
       if (submitBtn) { submitBtn.textContent = 'Odeslat objednávku & QR'; submitBtn.disabled = false; submitBtn.dataset.lock = 'false'; }
+      return false;
     }
+  }
+
+  // Uloží stručný záznam objednávky pro lokální fallback statistik
+  function saveOrderToLocal(order){
+    try{
+      const key = 'orders_v1';
+      const list = JSON.parse(localStorage.getItem(key)||'[]');
+      list.push({ amount: Number(order.amount)||0, items: Array.isArray(order.items)? order.items : [], timestamp: order.timestamp || new Date().toISOString() });
+      localStorage.setItem(key, JSON.stringify(list));
+    }catch(_){ /* ignore */ }
   }
 
   // === Rekapitulace košíku + synchronizace částky ===
@@ -328,7 +340,11 @@
             timestamp: new Date().toISOString()
           };
           
-      await submitOrder(orderData);
+      const ok = await submitOrder(orderData);
+      if (ok) {
+        saveOrderToLocal(orderData);
+        try { window.dispatchEvent(new Event('stats:change')); } catch(_) {}
+      }
     });
   }
 })();

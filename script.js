@@ -329,6 +329,12 @@
     // Show something immediately (no skeleton)
     show(getLocalFallback(), true);
 
+    // Listen for local changes (after successful order submit)
+    window.addEventListener('stats:change', ()=>{
+      const vals = getLocalFallback();
+      show(vals, true);
+    });
+
     try{
       const cfg = (window.PAYCFG||{});
       const base = cfg.SHEET_WEBHOOK;
