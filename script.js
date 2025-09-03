@@ -155,6 +155,8 @@
 
   // === 3D TILT EFEKT ===
   function initTiltEffect() {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) return; // na mobilech vypnout tilt, předejdeme překryvům
     const tiltElements = document.querySelectorAll('.product-card, .glass-card');
     
     tiltElements.forEach(el => {

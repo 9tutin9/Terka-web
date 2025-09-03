@@ -577,6 +577,22 @@ section.glass-card {
   margin-bottom: 2rem;
 }
 
+/* ===== INDEX: MOBILNÍ ÚPRAVY ===== */
+@media (max-width: 768px) {
+  .hero { padding: 96px 1rem 1.5rem 1rem; min-height: 70vh; }
+  .hero-card { min-height: 420px; padding: 2.25rem 1.5rem; background-position: center 40%; }
+  .hero-card h1 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+  .hero-card p { font-size: 1.05rem; margin-bottom: 1.25rem; }
+
+  .card-wrapper { flex-direction: column !important; gap: 1.25rem; padding: 1.5rem; }
+  .card-image, .card-content { width: 100%; min-width: 0; }
+  .card-image img { max-width: 100%; }
+  .card-content p { font-size: 1.05rem; }
+
+  .products-grid { gap: 1rem; margin-top: 1.25rem; }
+  section { padding: 3rem 1rem; }
+}
+
 /* ===== PRODUKTY ===== */
 .products {
   text-align: center;
