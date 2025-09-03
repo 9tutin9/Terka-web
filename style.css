@@ -904,7 +904,7 @@ section.glass-card {
 #cart-drawer .cart-toggle {
   position: fixed;
   right: 1rem;
-  top: 5rem;
+  top: 6rem;
   background: var(--bg-glass);
   color: var(--text-primary);
   padding: 1rem 1.5rem;
