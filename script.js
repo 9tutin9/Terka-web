@@ -377,14 +377,59 @@
       }
     }
 
-    // Show something immediately (no skeleton)
-    show(getLocalFallback(), true);
+    // Defer the first animation until the stats bar enters the viewport
+    let latest = null;
+    let animatedOnce = false;
+
+    function animateWhenVisible(){
+      const run = () => {
+        if (animatedOnce) return;
+        animatedOnce = true;
+        mealsEl.textContent = '0';
+        braceletsEl.textContent = '0';
+        ordersEl.textContent = '0';
+        show(latest || getLocalFallback(), true);
+      };
+
+      // Spusť animaci při prvním skutečném scrollu uživatele
+      const onFirstScroll = () => {
+        run();
+        window.removeEventListener('scroll', onFirstScroll);
+      };
+      window.addEventListener('scroll', onFirstScroll, { passive: true });
+
+      // Bezpečnostní fallback: pokud by uživatel vůbec nescrolloval, spustí se po 6s
+      setTimeout(run, 6000);
+    }
+
+    // Show something immediately: prefer cached server values, else local fallback
+    function loadCached(){
+      try{
+        const v = JSON.parse(localStorage.getItem('stats_cache_v1')||'');
+        if (v && typeof v === 'object') return v;
+      }catch(_){}
+      return null;
+    }
+
+    const cached = loadCached();
+    if (cached){
+      latest = cached;
+      show(cached, false);
+    } else {
+      const fb = getLocalFallback();
+      latest = fb;
+      show(fb, false);
+    }
 
     // Listen for local changes (after successful order submit)
     window.addEventListener('stats:change', ()=>{
       const vals = getLocalFallback();
-      show(vals, true);
+      latest = vals;
+      if (animatedOnce) show(vals, true);
     });
+
+    // Start observing for visibility ASAP (do not wait for network)
+    animateWhenVisible();
 
     try{
       const cfg = (window.PAYCFG||{});
@@ -401,10 +446,14 @@
         orders: Number(data.orders)||0
       };
       if (!vals.meals && (Number(data.total_amount)||0)>0){ vals.meals = Math.floor(Number(data.total_amount)/23); }
-      show(vals, true);
+      latest = vals;
+      try{ localStorage.setItem('stats_cache_v1', JSON.stringify(vals)); }catch(_){ }
+      if (animatedOnce) show(vals, true);
     }catch(e){
       // keep local values shown
     }
+
+    // (Observer already active) — when network returns, we may re-animate to fresh values
   }
 
   // === INITIALIZACE ===
