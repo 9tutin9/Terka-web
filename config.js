@@ -7,7 +7,7 @@ window.PAYCFG = {
   CURRENCY: "CZK",
 
   // === Admin kontakt ===
-  ADMIN_EMAIL: "stevenuserusrex@gmail.com",
+  ADMIN_EMAIL: "detidetem.eu@gmail.com",
 
   EMAILJS_PUBLIC_KEY: "72MwQ4Rrd3qT1kzT2",
   EMAILJS_SERVICE_ID: "service_1tb0v4g",

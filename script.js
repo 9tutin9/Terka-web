@@ -10,6 +10,7 @@
     menuToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
       menuToggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+      document.body.classList.toggle('menu-open', navLinks.classList.contains('open'));
     });
 
     // Zavření menu při kliknutí na odkaz
@@ -17,6 +18,7 @@
       link.addEventListener('click', () => {
         navLinks.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
       });
     });
   }
@@ -279,6 +281,53 @@
     });
   }
 
+  // === LIGHTBOX (ZOOM OBRÁZKŮ) ===
+  function initLightbox(){
+    // vytvoř backdrop jen jednou
+    let backdrop = document.querySelector('.lightbox-backdrop');
+    if (!backdrop){
+      backdrop = document.createElement('div');
+      backdrop.className = 'lightbox-backdrop';
+      backdrop.innerHTML = '<div class="lightbox-content"><img alt=""/><button class="lightbox-close" aria-label="Zavřít">×</button></div>';
+      document.body.appendChild(backdrop);
+    }
+
+    const imgEl = backdrop.querySelector('img');
+    const closeBtn = backdrop.querySelector('.lightbox-close');
+
+    const isLogo = (img)=> img.classList.contains('logo-mark') || img.closest('.logo');
+
+    function open(src, alt){
+      imgEl.src = src; imgEl.alt = alt||'';
+      backdrop.classList.add('show');
+      document.body.classList.add('lb-locked');
+    }
+    function close(){
+      backdrop.classList.remove('show');
+      document.body.classList.remove('lb-locked');
+      imgEl.src = '';
+    }
+
+    backdrop.addEventListener('click', (e)=>{ if (e.target === backdrop) close(); });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
+
+    // Delegace na všechny obrázky kromě loga
+    document.addEventListener('click', (e)=>{
+      const img = e.target.closest('img');
+      if (!img || isLogo(img)) return;
+      // ignorovat obrázky s rolí dekorace
+      if (img.getAttribute('aria-hidden') === 'true') return;
+      // Na hlavní stránce e-shopu neblokovat klik na odkaz (vede na podstránku)
+      const path = (location.pathname||'').toLowerCase();
+      if (path.endsWith('/eshop.html') || path.endsWith('eshop.html')){
+        if (img.closest('a')) return;
+      }
+      e.preventDefault();
+      open(img.currentSrc || img.src, img.alt);
+    });
+  }
+
   // === STATS ===
   async function initStatsPanel(){
     const panel = document.getElementById('statsBar');
@@ -368,6 +417,7 @@
     initSmoothScroll();
     initPerformanceOptimizations();
     initAccessibility();
+    initLightbox();
     initStatsPanel();
   }
 

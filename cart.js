@@ -136,9 +136,23 @@
     const btn = e.target.closest('[data-add-to-cart]');
     if (!btn) return;
     const id = btn.getAttribute('data-id') || btn.dataset.id || btn.value || btn.name || 'prod-'+Math.random().toString(36).slice(2,9);
-    const name = btn.getAttribute('data-name') || btn.dataset.name || btn.textContent.trim() || 'Produkt';
+    let name = (btn.getAttribute('data-name') || btn.dataset.name || '').trim();
+    if (!name){
+      const pageTitle = (document.querySelector('main h1') || document.querySelector('h1'))?.textContent?.trim() || '';
+      const card = btn.closest('.product-card');
+      let variant = '';
+      if (card && card.parentElement){
+        const siblings = Array.from(card.parentElement.children).filter(el=>el.classList && el.classList.contains('product-card'));
+        const idx = siblings.indexOf(card);
+        if (idx >= 0) variant = ` — varianta ${idx+1}`;
+      }
+      name = (pageTitle || 'Produkt') + variant;
+    }
     const price = parseFloat(btn.getAttribute('data-price') || btn.dataset.price);
-    const image = btn.getAttribute('data-image') || btn.dataset.image || '';
+    // Preferuj reálný obrázek z karty; data-image použij jen jako fallback
+    let image = btn.getAttribute('data-image') || btn.dataset.image || '';
+    const cardImg = btn.closest('.product-card')?.querySelector('img');
+    if (cardImg) image = cardImg.currentSrc || cardImg.src || image;
     let qty = 1;
     const qtyInputSel = btn.getAttribute('data-qty-selector');
     if (qtyInputSel){

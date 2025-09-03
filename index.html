@@ -29,7 +29,7 @@
   <!-- Navigace -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo">Děti dětem</a>
+      <a href="index.html" class="logo"><img src="images/detidetem.logo.webp" alt="Děti dětem" style="width: 60px; height: 50px;"> Děti dětem</a>
       <button class="menu-toggle" aria-label="Menu">&#9776;</button>
       <ul class="nav-links">
         <li><a href="index.html">Úvod</a></li>
@@ -73,7 +73,10 @@
   <section class="card-section intro">
     <div class="card-wrapper">
       <div class="card-image">
-        <img src="images/DSC00294.png" alt="Pomoc dětem v Jemenu" loading="lazy">
+        <picture>
+          <source srcset="images/DSC00294.webp" type="image/webp">
+          <img src="images/DSC00294.webp" alt="Pomoc dětem v Jemenu" loading="lazy">
+        </picture>
       </div>
       <div class="card-content">
         <h2>Pomůžete i vy?</h2>
@@ -181,9 +184,101 @@
     <a href="eshop.html" class="btn-primary">Navštívit e-shop</a>
   </section>
 
+  <!-- Na co a jak používáme vaše dary -->
+  <section id="dary" class="donations-usage card-section">
+    <div class="du-header glass-card">
+      <h2>Na co a jak používáme vaše dary</h2>
+      <p class="muted">Aktualizace 02/2025 · Transparentně a s respektem k místním lidem</p>
+    </div>
+
+    <div class="du-steps">
+      <div class="du-step glass-card">
+        <div class="du-step-num">1</div>
+        <h3>Dobří lidé přispívají</h3>
+        <p>Dary posíláte na transparentní účet projektu.</p>
+      </div>
+      <div class="du-step glass-card">
+        <div class="du-step-num">2</div>
+        <h3>Pravidelné odeslání do Jemenu</h3>
+        <p>Pomůžu jak můžu Česká republika odesílá finance v pravidelných intervalech.</p>
+      </div>
+      <div class="du-step glass-card">
+        <div class="du-step-num">3</div>
+        <h3>Sabina dary vybere a zařídí provoz</h3>
+        <p>Ve spolupráci s místními lidmi zajistí chod kuchyně a nákupy.</p>
+      </div>
+    </div>
+
+    <div class="du-budgets">
+      <div class="du-budget glass-card">
+        <h4>Lidé a chod kuchyně</h4>
+        <p class="muted">Mzdy místních pracovníků, vedení projektu, kuchařky a pomocníci.</p>
+        <div class="du-price">49 000 Kč/měsíc</div>
+      </div>
+      <div class="du-budget glass-card">
+        <h4>Nákup surovin</h4>
+        <p class="muted">Brambory, zelenina, rýže, mouka, olej, koření a další.</p>
+        <div class="du-price">47 000 Kč/měsíc</div>
+      </div>
+      <div class="du-budget glass-card">
+        <h4>Administrativa, nájem a energie</h4>
+        <p class="muted">Nájem, poplatky, voda, plyn, benzín a drobný materiál.</p>
+        <div class="du-price">20 000 Kč/měsíc</div>
+      </div>
+    </div>
+
+    <div class="du-stats glass-card">
+      <div class="du-stat">
+        <div class="du-stat-value">170</div>
+        <div class="du-stat-label">porcí jídla denně</div>
+      </div>
+      <div class="du-stat">
+        <div class="du-stat-value">23 Kč</div>
+        <div class="du-stat-label">na člověka a den</div>
+      </div>
+      <p class="du-summary">Náklady na jednoho strávníka jsou přibližně 683 Kč/měsíc ≈ 23 Kč/den. Každá vaše koruna se mění v jídlo, úlevu a naději.</p>
+    </div>
+
+    <p class="du-note muted">Poznámka: Z darů nejsou hrazeny jiné náklady na projekt. Organizace pracuje dobrovolnicky s důrazem na transparentnost.</p>
+
+    <div class="du-cta">
+      <a class="btn-primary" href="https://www.pomuzujakmuzu.cz" target="_blank" rel="noopener">pomuzujakmuzu.cz</a>
+    </div>
+  </section>
+
+  <section class="glass-card" style="margin-top:32px">
+    <h2>Důležité informace</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:20px">
+      <div style="padding:20px;background:rgba(0,119,182,0.1);border-radius:16px;border-left:4px solid #0077b6">
+        <h3 style="margin-bottom:12px;color:#0077b6">📦 Dodání</h3>
+        <p style="font-size:0.9rem">Zásilky odesíláme do 3 pracovních dnů po připsání platby na účet. Doprava zdarma nad 500 Kč.</p>
+      </div>
+      
+      <div style="padding:20px;background:rgba(255,183,3,0.1);border-radius:16px;border-left:4px solid #ffb703">
+        <h3 style="margin-bottom:12px;color:#ffb703">💳 Platba</h3>
+        <p style="font-size:0.9rem">Přijímáme platby přes QR kód (SPD standard) nebo bankovní převod. Variabilní symbol = číslo objednávky.</p>
+      </div>
+      
+      <div style="padding:20px;background:rgba(16,185,129,0.1);border-radius:16px;border-left:4px solid #10b981">
+        <h3 style="margin-bottom:12px;color:#10b981">🔄 Vrácení</h3>
+        <p style="font-size:0.9rem">Máte právo vrátit zboží do 14 dnů od převzetí bez udání důvodu. Vyloučeno pro zboží na míru.</p>
+      </div>
+      
+      <div style="padding:20px;background:rgba(239,68,68,0.1);border-radius:16px;border-left:4px solid #ef4444">
+        <h3 style="margin-bottom:12px;color:#ef4444">❤️ Charita</h3>
+        <p style="font-size:0.9rem">Výtěžek z každého produktu jde na pomoc dětem v Jemenu. Projekt "Pomůžu jak můžu".</p>
+      </div>
+
+      <div style="padding:20px;background:rgba(255, 3, 226, 0.1);border-radius:16px;border-left:4px solid #ff03f7">
+        <h3 style="margin-bottom:12px;color:#3e083e">📃 odpočet darů</h3>
+        <p style="font-size:0.9rem">Dáváte dary na dobročinnost? Stát vás za to může podpořit tím, že vám sníží základ daně. Pro potřebná potvrzení nás neváhejte kontaktovat.</p>
+      </div>
+    </div>
+  </section>
   <!-- Footer -->
   <footer class="contact">
     <div class="glass-card">
+      <img src="images/detidetem.logo.webp" alt="Děti dětem" class="footer-logo" />
       <h2>Kontaktujte nás</h2>
       <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
       <p>Sledujte nás na sociálních sítích:</p>

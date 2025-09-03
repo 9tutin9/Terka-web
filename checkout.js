@@ -1,6 +1,9 @@
 // checkout.js — generování QR platby (CZ SPD) + rekapitulace s obrázky + EmailJS + uložení do Sheets
 (function(){
   const cfg = (window.PAYCFG||{});
+  const MEAL_COST_CZK = 23;
+  const MIN_MEALS_PER_BRACELET = 3;
+  const MIN_PER_BRACELET = MEAL_COST_CZK * MIN_MEALS_PER_BRACELET; // 69 Kč
 
   // === DOM prvky ===
   const formEl      = document.getElementById('orderForm');
@@ -258,11 +261,14 @@
     const lines = document.getElementById('cartLines');
     const totalEl = document.getElementById('cartTotal');
     const amountInput = document.getElementById('amount');
+    const helpEl = amountInput ? amountInput.parentElement.querySelector('.help') : null;
     if (!box || !lines || !totalEl || !amountInput) return;
 
     if (!items.length){
       box.style.display = 'none';
       amountInput.readOnly = false;
+      amountInput.min = '1';
+      if (helpEl) helpEl.textContent = 'Pokud zboží nemá pevnou cenu, zadejte dohodnutou částku.';
       return;
     }
 
@@ -279,9 +285,68 @@
     `).join('');
 
     const total = items.reduce((a,b)=>a + (Number(b.price)||0)*(Number(b.qty)||0), 0);
+    const qtyTotal = items.reduce((a,b)=>a + (Number(b.qty)||0), 0);
+    const minAmount = qtyTotal * MIN_PER_BRACELET;
     totalEl.textContent = total.toLocaleString('cs-CZ') + ' Kč';
-    amountInput.value = String(Math.round(total));
-    amountInput.readOnly = true;
+    const baseAmount = Math.max(Math.round(total), minAmount);
+    amountInput.value = String(baseAmount);
+    amountInput.readOnly = false;
+    amountInput.min = String(minAmount);
+    if (helpEl) helpEl.textContent = `Můžete částku upravit. Minimálně ${minAmount.toLocaleString('cs-CZ')} Kč pro ${qtyTotal} ks (69 Kč/ks).`;
+
+    // Enforce min a updatuj zobrazení Celkem dle zvolené částky
+    const updateDisplay = ()=>{ totalEl.textContent = (Number(amountInput.value)||minAmount).toLocaleString('cs-CZ') + ' Kč'; };
+    const enforce = ()=>{
+      let v = Number(amountInput.value||0);
+      if (!isFinite(v) || v < minAmount) {
+        amountInput.value = String(minAmount);
+      }
+      updateDisplay();
+    };
+    amountInput.removeEventListener('change', amountInput._enf || (()=>{}));
+    amountInput.removeEventListener('blur', amountInput._enf || (()=>{}));
+    amountInput._enf = enforce;
+    amountInput.addEventListener('change', enforce);
+    amountInput.addEventListener('blur', enforce);
+
+    // sync range and buttons
+    const range = document.getElementById('amountRange');
+    if (range){
+      range.min = String(minAmount);
+      // Dynamický rozsah: minimálně 2× základ, nebo +2000 Kč buffer
+      const current = Number(amountInput.value)||minAmount;
+      const maxRange = Math.max(baseAmount * 2, minAmount + 2000);
+      range.max = String(maxRange);
+      range.step = '1';
+      range.value = String(current);
+      function syncFromRange(){ amountInput.value = range.value; enforce(); }
+      function syncFromInput(){ range.value = String(Number(amountInput.value)||minAmount); }
+      range.removeEventListener('input', range._rng || (()=>{}));
+      range._rng = syncFromRange;
+      range.addEventListener('input', syncFromRange);
+      amountInput.removeEventListener('input', amountInput._rng2 || (()=>{}));
+      amountInput._rng2 = syncFromInput;
+      amountInput.addEventListener('input', syncFromInput);
+    }
+
+    const dec = document.querySelector('.amount-dec');
+    const inc = document.querySelector('.amount-inc');
+    if (dec && inc){
+      dec.onclick = ()=>{ amountInput.value = String(Math.max(minAmount, (Number(amountInput.value)||minAmount) - 1)); enforce(); const r=document.getElementById('amountRange'); if(r) { r.value = amountInput.value; } };
+      inc.onclick = ()=>{ 
+        const next = (Number(amountInput.value)||minAmount) + 1; 
+        amountInput.value = String(next); 
+        enforce(); 
+        const r=document.getElementById('amountRange'); 
+        if(r){ 
+          // když překročíme maximum, posuň maximum nahoru
+          if (next > Number(r.max||0)) r.max = String(next * 2);
+          r.value = amountInput.value; 
+        }
+      };
+    }
+    // Inicializuj zobrazení podle aktuální částky
+    updateDisplay();
   }
   window.addEventListener('cart:change', refreshCartSummary);
   document.addEventListener('DOMContentLoaded', refreshCartSummary);
@@ -291,14 +356,18 @@
     formEl.addEventListener('submit', async (ev)=>{
       ev.preventDefault();
 
-      // Pokud je košík, použíj jeho součet
+      // Pokud je košík, částka je editovatelná, ale nesmí klesnout pod min (69 Kč × ks)
       const cartItems = (window.Cart ? window.Cart.load() : []);
       let amount = Number(valByName('amount') || 0);
       if (cartItems && cartItems.length) {
-        const cartTotal = cartItems.reduce((a,b)=> a + (Number(b.price)||0) * (Number(b.qty)||0), 0);
-        amount = cartTotal;
-        const amountInput = document.getElementById('amount');
-        if (amountInput) { amountInput.value = String(Math.round(cartTotal)); amountInput.readOnly = true; }
+        const qtyTotal = cartItems.reduce((a,b)=> a + (Number(b.qty)||0), 0);
+        const minAmount = qtyTotal * MIN_PER_BRACELET;
+        if (!isFinite(amount) || amount < minAmount) {
+          amount = minAmount;
+          const amountInput = document.getElementById('amount');
+          if (amountInput) amountInput.value = String(minAmount);
+          showToast(`Částka upravena na minimálních ${minAmount.toLocaleString('cs-CZ')} Kč`, 'info');
+        }
       }
 
       const name   = valByName('customer_name');

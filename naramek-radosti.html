@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Náramek radosti — Děti dětem</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <meta name="description" content="Podstránka náramku radosti – 6 anonymních produktů po 69 Kč.">
+</head>
+<body>
+  <canvas id="ornament-bg" aria-hidden="true"></canvas>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><img src="images/detidetem.logo.webp" alt="Děti dětem" class="logo-mark"> Děti dětem</a>
+      <button class="menu-toggle" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Úvod</a></li>
+        <li><a href="eshop.html">E-shop</a></li>
+        <li><a href="onas.html">O nás</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="obchodni-podminky.html">Obchodní podmínky</a></li>
+        <li><a href="checkout.html">Objednávka &amp; QR</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
+    <section class="glass-card products-section">
+      <h1>Náramek radosti — výběr</h1>
+      <p class="muted">Vyberte si libovolný styl. Každý produkt = 69 Kč = 3 porce jídla.</p>
+      <div class="products-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px">
+        <div class="product-card glass-card"><img src="images/DMUC7072.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-1" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-1" data-name=" " data-price="69" data-image="images/DMUC7072.webp" data-qty-selector="#qty-radosti-1">3 jídla = 69 Kč</button></div></div>
+        <div class="product-card glass-card"><img src="images/e4f8d983-0d33-43f5-8a1e-7b28f028f898.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-2" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-2" data-name=" " data-price="69" data-image="images/CJAJE7328.webp" data-qty-selector="#qty-radosti-2">3 jídla = 69 Kč</button></div></div>
+        <div class="product-card glass-card"><img src="images/e15a29f7-e8ab-44b2-8ea7-d650650b5721.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-3" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-3" data-name=" " data-price="69" data-image="images/BCFQE9447.webp" data-qty-selector="#qty-radosti-3">3 jídla = 69 Kč</button></div></div>
+        <div class="product-card glass-card"><img src="images/dfcad454-f919-41b1-a4b3-197149d83772.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-4" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-4" data-name=" " data-price="69" data-image="images/DZSNE2447.webp" data-qty-selector="#qty-radosti-4">3 jídla = 69 Kč</button></div></div>
+        <div class="product-card glass-card"><img src="images/ceb1a0a2-3dbc-4ee4-aafb-b175cafd6ed5.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-5" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-5" data-name=" " data-price="69" data-image="images/DSC00278.webp" data-qty-selector="#qty-radosti-5">3 jídla = 69 Kč</button></div></div>
+        <div class="product-card glass-card"><img src="images/afb2c83c-835f-41db-b973-a72034c54a0a.webp" alt="" loading="lazy" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-bottom:16px"><div style="display:flex;gap:12px;align-items:center;margin-top:16px"><input id="qty-radosti-6" type="number" min="1" value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px"><button class="btn-primary" data-add-to-cart data-id="radosti-6" data-name=" " data-price="69" data-image="images/DSC00234.webp" data-qty-selector="#qty-radosti-6">3 jídla = 69 Kč</button></div></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="contact">
+    <div class="glass-card">
+      <img src="images/detidetem.logo.webp" alt="Děti dětem" class="footer-logo">
+      <h2>Kontaktujte nás</h2>
+      <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
+      <p>Sledujte nás na sociálních sítích:</p>
+      <ul class="social-links">
+        <li><a href="https://www.instagram.com/deti_detem_" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@deti_detem" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="copyright">© 2025 Děti dětem. Všechna práva vyhrazena.</p>
+  </footer>
+
+  <script src="ornament-bg.js" defer></script>
+  <script src="script.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>
+

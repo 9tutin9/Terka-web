@@ -24,7 +24,7 @@
   <!-- Navigace -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo">Děti dětem</a>
+      <a href="index.html" class="logo"><img src="images/detidetem.logo.webp" alt="Děti dětem" class="logo-mark"> Děti dětem</a>
       <button class="menu-toggle" aria-label="Menu">&#9776;</button>
       <ul class="nav-links">
         <li><a href="index.html">Úvod</a></li>
@@ -38,6 +38,7 @@
   </nav>
 
   <div class="checkout-wrap glass-card">
+    <div style="text-align:center;margin-bottom:12px"><img src="images/detidetem.logo.webp" alt="Děti dětem" class="footer-logo"></div>
     <h1>Objednávka &amp; QR platba</h1>
     <p class="muted">Vyplňte kontaktní údaje a částku. Po odeslání vygenerujeme QR platbu (standard <span class="mono">SPD</span>) a objednávku odešleme.</p>
 
@@ -82,9 +83,14 @@
         </label>
       </div>
 
-      <div class="field">
+      <div class="field amount-field">
         <label for="amount">Částka k zaplacení (CZK)</label>
-        <input id="amount" name="amount" type="number" required min="1" step="1" placeholder="250" />
+        <div class="amount-control">
+          <button type="button" class="amount-dec" aria-label="Snížit částku">−</button>
+          <input id="amount" name="amount" type="number" required min="1" step="1" placeholder="250" />
+          <button type="button" class="amount-inc" aria-label="Zvýšit částku">+</button>
+        </div>
+        <input id="amountRange" class="amount-range" type="range" min="1" step="1" value="1" aria-label="Posuvník částky">
         <small class="help">Pokud zboží nemá pevnou cenu, zadejte dohodnutou částku.</small>
       </div>
 
@@ -119,6 +125,7 @@
   <!-- Footer -->
   <footer class="contact">
     <div class="glass-card">
+      <img src="images/detidetem.logo.webp" alt="Děti dětem" class="footer-logo">
       <h2>Kontaktujte nás</h2>
       <p>Pokud máte otázky ohledně webu, výrobků či jiné, neváhejte se nás zeptat.</p>
       <p>Sledujte nás na sociálních sítích:</p>
