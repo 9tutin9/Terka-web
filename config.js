@@ -13,7 +13,5 @@ window.PAYCFG = {
   EMAILJS_SERVICE_ID: "service_1tb0v4g",
   EMAILJS_TEMPLATE_CUSTOMER: "template_8g3hjfu",
   EMAILJS_TEMPLATE_ADMIN: "template_b2i0ubi",
-
-  SHEET_WEBHOOK: "https://script.google.com/macros/s/AKfycbyRfqG91xSGkmCIQkr2Nzk4bOT2OmtCmYypmOwRzJBk4nh8XlnvqWJ_NnefHrlPvQukjA/exec?token=o.wI_ud8%5BQzL8z", // 
-  SHEET_TOKEN:   "o.wI_ud8[QzL8z" 
+  
 };

@@ -120,16 +120,16 @@
 
   function canvasToDataURL(canvas){ return canvas.toDataURL("image/png"); }
 
-  // Revert to token-in-URL + text/plain; add JSON fallback if not ok
+  // Serverless proxy → /api/order (token zůstává na serveru)
   async function sendToSheet(order){
-    const url = (cfg?.SHEET_WEBHOOK)||""; const token = (cfg?.SHEET_TOKEN)||""; if (!url || !token) return;
-    const withToken = url + (url.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(token) + '&action=add_order';
     try{
-      const res = await fetch(withToken, { method: 'POST', headers: { 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify(order) });
-      if (!res.ok) {
-        await fetch(url, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ token, action: 'add_order', order }) });
-      }
-    }catch(e){ console.warn('Sheet webhook error:', e); }
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+      if (!res.ok) console.warn('Order proxy error:', await res.text());
+    }catch(e){ console.warn('Order proxy fetch error:', e); }
   }
 
   function showToast(message, type = 'info') {
@@ -382,6 +382,10 @@
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
       const msg = `Objednavka ${orderNo}${note ? " — " + note : ""}`;
+      // Haléřový identifikátor (0,01–0,09 Kč) pro jednoznačné párování bez VS
+      // Odvozeno z VS, přičteno k částce, zaokrouhleno na 2 desetinná místa
+      const idCents = ((parseInt(vs, 10) % 9) + 1) / 100; // 0.01 .. 0.09
+      amount = Math.round((amount + idCents) * 100) / 100;
       const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
       await drawQR(spd);
@@ -401,6 +405,7 @@
           address_zip: zip,
         note,
         amount,
+        amount_identifier_czk: idCents,
         message: `Objednavka ${orderNo} — ${safe(name)}`,
         qr_png: qrDataUrl,
             qr_code: document.getElementById('qrCode')?.innerHTML || '',
