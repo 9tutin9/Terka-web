@@ -47,9 +47,15 @@
       <div class="delivery-section">
         <h3>Doručovací údaje</h3>
         <div class="delivery-grid">
+          <div class="delivery-field" style="grid-column: 1/-1">
+            <label class="agree" style="gap:0.75rem; align-items:center">
+              <input type="checkbox" name="anonymous" id="anonymousToggle">
+              Darovat anonymně (nezobrazit jméno ve zprávě pro příjemce)
+            </label>
+          </div>
           <div class="delivery-field">
             <label>Jméno a příjmení</label>
-            <input name="customer_name" required placeholder="Jan Novák">
+            <input name="customer_name" id="customerName" required placeholder="Jan Novák">
           </div>
           <div class="delivery-field">
             <label>E-mail pro zaslání QR</label>

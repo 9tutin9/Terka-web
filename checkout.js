@@ -375,6 +375,7 @@
       }
 
       const name   = valByName('customer_name');
+      const anonymous = !!document.getElementById('anonymousToggle')?.checked;
       const email  = valByName('customer_email');
       const note   = valByName('note');
       const phone  = valByName('customer_phone');
@@ -385,7 +386,10 @@
 
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
-      const msg = `Objednavka ${orderNo}${note ? " — " + note : ""}`;
+      // Pokud anonymně, neuvádět jméno v MSG (zůstane jen číslo objednávky)
+      const msg = anonymous
+        ? `Objednavka ${orderNo}`
+        : `Objednavka ${orderNo}${note ? " — " + note : ""}`;
       // Haléřový identifikátor (0,01–0,09 Kč) pro jednoznačné párování bez VS
       // Odvozeno z VS, přičteno k částce, zaokrouhleno na 2 desetinná místa
       const idCents = ((parseInt(vs, 10) % 9) + 1) / 100; // 0.01 .. 0.09
@@ -423,7 +427,7 @@
         note,
         amount,
         amount_identifier_czk: idCents,
-        message: `Objednavka ${orderNo} — ${safe(name)}`,
+        message: anonymous ? `Objednavka ${orderNo}` : `Objednavka ${orderNo} — ${safe(name)}`,
         qr_png: qrDataUrl,
             qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
