@@ -145,7 +145,7 @@
       const submitBtn = document.querySelector('#orderForm button[type="submit"]');
       if (submitBtn) { submitBtn.textContent = 'Zpracovávám...'; submitBtn.disabled = true; submitBtn.dataset.lock = 'true'; }
 
-      if (cfg.SHEET_WEBHOOK && cfg.SHEET_TOKEN) await sendToSheet(orderData);
+      await sendToSheet(orderData);
 
       // Připrav HTML položek a dopad (impact)
       const itemsHTML = renderItemsHTML(orderData.items || []);
