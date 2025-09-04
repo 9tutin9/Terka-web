@@ -78,6 +78,9 @@ html {
   padding: 0;
 }
 
+/* Zabraň horizontálnímu posunu/scrollu */
+html, body { overflow-x: hidden; }
+
 /* ===== TYPOGRAFIE ===== */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
@@ -1688,6 +1691,17 @@ body.cart-open {
   .checkout-page .summary-list .thumb { width: 44px; height: 44px; }
   .checkout-page .summary-list .info .name { font-size: 1rem; }
   .checkout-page .summary-list .price { font-size: 1rem; }
+}
+
+/* Checkout vyrovnání na malých displejích (bez posunu doprava) */
+@media (max-width: 480px) {
+  .checkout-page .checkout-wrap,
+  .checkout-page .form-grid,
+  .checkout-page .delivery-section,
+  .checkout-page .delivery-grid,
+  .checkout-page .field { width: 100%; max-width: 100%; }
+  .checkout-page .delivery-section { padding: 1rem; margin: 1rem 0; }
+  .checkout-page .btn-primary { width: 100%; }
 }
 
 /* ===== PREFERS REDUCED MOTION ===== */
