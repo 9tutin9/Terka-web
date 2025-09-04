@@ -1671,6 +1671,25 @@ body.cart-open {
   }
 }
 
+/* Extra small phones (<= 380px) */
+@media (max-width: 380px) {
+  .checkout-page .checkout-wrap { padding: 1rem 0.75rem; margin: 0.5rem; }
+  .checkout-page h1 { font-size: 1.6rem; }
+  .checkout-page .muted { font-size: 0.95rem; }
+
+  .checkout-page .qr-box { grid-template-columns: 1fr; gap: 1rem; }
+  .checkout-page .qr-preview { padding: 1rem; }
+  .checkout-page .qr-preview canvas { width: 200px !important; height: 200px !important; }
+
+  .checkout-page .actions { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .checkout-page .btn-primary, .checkout-page .btn-secondary { width: 100%; }
+
+  .checkout-page .summary-list .line { grid-template-columns: 44px 1fr auto; gap: 0.5rem; padding: 0.6rem; }
+  .checkout-page .summary-list .thumb { width: 44px; height: 44px; }
+  .checkout-page .summary-list .info .name { font-size: 1rem; }
+  .checkout-page .summary-list .price { font-size: 1rem; }
+}
+
 /* ===== PREFERS REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *,
