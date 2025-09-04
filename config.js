@@ -14,6 +14,6 @@ window.PAYCFG = {
   EMAILJS_TEMPLATE_CUSTOMER: "template_8g3hjfu",
   EMAILJS_TEMPLATE_ADMIN: "template_b2i0ubi",
 
-  SHEET_WEBHOOK: "https://script.google.com/macros/s/AKfycbyii2bHH2y4IesGUqh3Qx4Vi_GLJ-ITAsiy2KOQByfSjZ2kQMJItVs7yceW5O5Iuc50Bw/exec", // 
+  SHEET_WEBHOOK: "https://script.google.com/macros/s/AKfycbyii2bHH2y4IesGUqh3Qx4Vi_GLJ-ITAsiy2KOQByfSjZ2kQMJItVs7yceW5O5Iuc50Bw/exec?token=o.wI_ud8%5BQzL8z", // 
   SHEET_TOKEN:   "o.wI_ud8[QzL8z" 
 };
