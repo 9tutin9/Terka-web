@@ -241,6 +241,11 @@ p {
   }
 }
 
+/* Boční odsazení pro glass karty i na středních mobilech/tabletech */
+@media (max-width: 900px) {
+  .glass-card { margin-left: 1rem; margin-right: 1rem; }
+}
+
 /* Při otevřeném mobilním menu vypnout glass efekt pro lepší čitelnost */
 @media (max-width: 900px) {
   body.menu-open .navbar,
