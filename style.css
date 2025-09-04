@@ -1667,11 +1667,14 @@ body.cart-open {
     font-size: 2rem;
   }
   
-.checkout-page .btn-primary,
+  .checkout-page .btn-primary,
   .checkout-page .btn-secondary {
     padding: 1rem 1.5rem;
     font-size: 1rem;
   }
+
+  /* Boční odsazení pro glass-card na malých displejích */
+  .glass-card { margin-left: 1rem; margin-right: 1rem; }
 }
 
 /* Extra small phones (<= 380px) */
