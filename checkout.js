@@ -185,7 +185,9 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine
+              impact_line: impactLine,
+              amount_identifier_czk: idCents,
+              amount_note: `Poznámka: Částka obsahuje haléřový identifikátor (+${Math.round(idCents*100)} haléřů).`
             }
           );
         } catch (emailError) { console.error("Chyba e-mail zákazníkovi:", emailError); }
@@ -217,7 +219,9 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine
+              impact_line: impactLine,
+              amount_identifier_czk: idCents,
+              amount_note: `Poznámka: Částka obsahuje haléřový identifikátor (+${Math.round(idCents*100)} haléřů).`
             }
           );
         } catch (emailError) { console.error("Chyba e-mail adminovi:", emailError); }
@@ -389,6 +393,19 @@
       const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
       await drawQR(spd);
+      // Poznámka o haléřovém identifikátoru u QR
+      try {
+        const qrContainer = document.getElementById('qrCode');
+        if (qrContainer) {
+          const noteEl = document.createElement('div');
+          noteEl.style.marginTop = '0.5rem';
+          noteEl.style.textAlign = 'center';
+          noteEl.style.color = '#777';
+          noteEl.style.fontSize = '0.9rem';
+          noteEl.textContent = `Poznámka: Částka obsahuje haléřový identifikátor pro spolehlivé spárování (+${Math.round(idCents*100)} haléřů).`;
+          qrContainer.appendChild(noteEl);
+        }
+      } catch(_){}
       if (orderNoEl) orderNoEl.textContent = orderNo;
       const canvas = document.getElementById('qrCanvas');
       const qrDataUrl = canvas ? canvasToDataURL(canvas) : '';
