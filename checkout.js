@@ -417,6 +417,7 @@
         message: "",
         payment_message: paymentMessage,
         delivery_note: deliveryNote,
+        note: deliveryNote,
         qr_png: qrDataUrl,
         qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
