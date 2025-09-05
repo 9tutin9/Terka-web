@@ -388,7 +388,13 @@
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
       const ss = deriveSSFromVS(vs);
-      const msg = ""; // vždy prázdné (nezveřejňovat)
+      // MSG: vždy bez osobních údajů. Pokud uživatel vyplní zprávu, připoj " — Deti detem"; jinak jen "Deti detem".
+      const baseMsg = "Deti detem";
+      let msg = baseMsg;
+      if (paymentMessage) {
+        msg = `${paymentMessage} — ${baseMsg}`;
+      }
+      if (msg.length > 60) msg = msg.slice(0, 60);
       const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, ss, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
       await drawQR(spd);
