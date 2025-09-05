@@ -19,7 +19,8 @@
   function valByName(name){ return (document.querySelector(`[name="${name}"]`)?.value || '').trim(); }
   function deriveSSFromVS(vs){
     const v = Math.abs(parseInt(vs, 10) || 0);
-    const ssNum = (v * 97 + 12345) % 10000000000; // 10 číslic
+    let ssNum = (v * 97 + 12345) % 10000000000; // 10 číslicový základ
+    ssNum = Math.floor(ssNum / 100) * 100 + 44; // zajisti koncovku 44
     return String(ssNum).padStart(10, '0');
   }
 
