@@ -17,6 +17,11 @@
   function pad(n){ return n < 10 ? '0'+n : ''+n; }
   function safe(v){ return String(v||''); }
   function valByName(name){ return (document.querySelector(`[name="${name}"]`)?.value || '').trim(); }
+  function deriveSSFromVS(vs){
+    const v = Math.abs(parseInt(vs, 10) || 0);
+    const ssNum = (v * 97 + 12345) % 10000000000; // 10 číslic
+    return String(ssNum).padStart(10, '0');
+  }
 
   // Vyrenderuje HTML seznam položek pro e-maily
   function renderItemsHTML(items){
@@ -382,7 +387,7 @@
 
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
-      const ss = vs;
+      const ss = deriveSSFromVS(vs);
       const msg = ""; // vždy prázdné (nezveřejňovat)
       const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, ss, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
@@ -421,7 +426,7 @@
         qr_png: qrDataUrl,
         qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
-        ss: vs,
+        ss: ss,
         items: cartItems,
         timestamp: new Date().toISOString()
       };
