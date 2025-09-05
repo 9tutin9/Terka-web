@@ -146,6 +146,80 @@
     setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
   }
 
+  // Po úspěšném odeslání objednávky: přehraj děkovné video v modálním okně
+  function showThankYouVideo(){
+    const ID = 'thankyou-video-backdrop';
+    let backdrop = document.getElementById(ID);
+    if (!backdrop){
+      backdrop = document.createElement('div');
+      backdrop.id = ID;
+      backdrop.style.position = 'fixed';
+      backdrop.style.inset = '0';
+      backdrop.style.background = 'rgba(0,0,0,0.85)';
+      backdrop.style.display = 'flex';
+      backdrop.style.alignItems = 'center';
+      backdrop.style.justifyContent = 'center';
+      backdrop.style.zIndex = '3000';
+
+      const box = document.createElement('div');
+      box.style.position = 'relative';
+      box.style.width = 'min(92vw, 900px)';
+      box.style.maxHeight = '92vh';
+      box.style.borderRadius = '16px';
+      box.style.overflow = 'hidden';
+      box.style.boxShadow = '0 20px 60px rgba(0,0,0,0.6)';
+      box.style.background = 'black';
+
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '×';
+      closeBtn.setAttribute('aria-label','Zavřít');
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.top = '8px';
+      closeBtn.style.right = '12px';
+      closeBtn.style.width = '40px';
+      closeBtn.style.height = '40px';
+      closeBtn.style.borderRadius = '999px';
+      closeBtn.style.border = '1px solid rgba(255,255,255,0.3)';
+      closeBtn.style.background = 'rgba(255,255,255,0.9)';
+      closeBtn.style.color = '#111';
+      closeBtn.style.fontSize = '24px';
+      closeBtn.style.cursor = 'pointer';
+
+      const video = document.createElement('video');
+      video.style.display = 'block';
+      video.style.width = '100%';
+      video.style.height = 'auto';
+      video.setAttribute('playsinline','');
+      video.setAttribute('controls','');
+      video.setAttribute('preload','metadata');
+
+      const src = document.createElement('source');
+      src.src = 'images/VID-20191124-WA0006.mp4';
+      src.type = 'video/mp4';
+      video.appendChild(src);
+
+      function close(){
+        try{ video.pause(); }catch(_){ }
+        backdrop.remove();
+        document.removeEventListener('keydown', onKey);
+      }
+      function onKey(e){ if (e.key === 'Escape') close(); }
+
+      backdrop.addEventListener('click', (e)=>{ if (e.target === backdrop) close(); });
+      closeBtn.addEventListener('click', close);
+      document.addEventListener('keydown', onKey);
+
+      box.appendChild(video);
+      box.appendChild(closeBtn);
+      backdrop.appendChild(box);
+      document.body.appendChild(backdrop);
+
+      // Pokus o automatické přehrání (většina prohlížečů vyžaduje interakci; fallback zobrazí jen přehrávač)
+      video.muted = true;
+      video.play().catch(()=>{ video.muted = false; });
+    }
+  }
+
   async function submitOrder(orderData) {
     try {
       // lock button UI
@@ -442,6 +516,7 @@
       if (ok) {
         saveOrderToLocal(orderData);
         try { window.dispatchEvent(new Event('stats:change')); } catch(_) {}
+        try { showThankYouVideo(); } catch(_){ }
       }
     });
   }
