@@ -432,12 +432,8 @@
     animateWhenVisible();
 
     try{
-      const cfg = (window.PAYCFG||{});
-      const base = cfg.SHEET_WEBHOOK;
-      const token = cfg.SHEET_TOKEN;
-      if (!base || !token) return; // keep local fallback
-      const url = base + (base.includes('?')?'&':'?') + 'action=stats' + '&token=' + encodeURIComponent(token);
-      const res = await fetch(url, { method:'GET' });
+      // Volání přes serverless proxy → vrátí vždy serverové statistiky
+      const res = await fetch('/api/stats', { method:'GET' });
       if (!res.ok) return;
       const data = await res.json();
       const vals = {
