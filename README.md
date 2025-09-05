@@ -185,7 +185,7 @@ window.AppScripts = {
 
 Pro technickou podporu kontaktujte:
 - **Email**: stevenuserusrex@gmail.com
-- **GitHub**: [Váš GitHub profil]
+- **GitHub**: 9tutin9
 
 ## 📄 Licence
 
