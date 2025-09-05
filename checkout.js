@@ -186,7 +186,9 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine
+              impact_line: impactLine,
+              payment_message: orderData.payment_message,
+              delivery_note: orderData.delivery_note
             }
           );
         } catch (emailError) { console.error("Chyba e-mail zákazníkovi:", emailError); }
@@ -210,7 +212,7 @@
               amount: orderData.amount,
               vs: orderData.vs,
               qr_png: orderData.qr_png,
-      items_html: itemsHTML,
+              items_html: itemsHTML,
               address_line: orderData.address_line,
               address_city: orderData.address_city,
               address_zip: orderData.address_zip,
@@ -218,7 +220,9 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine
+              impact_line: impactLine,
+              payment_message: orderData.payment_message,
+              delivery_note: orderData.delivery_note
             }
           );
         } catch (emailError) { console.error("Chyba e-mail adminovi:", emailError); }
@@ -295,7 +299,6 @@
     amountInput.min = String(minAmount);
     if (helpEl) helpEl.textContent = `Můžete částku upravit. Minimálně ${minAmount.toLocaleString('cs-CZ')} Kč pro ${qtyTotal} ks (69 Kč/ks).`;
 
-    // Enforce min a updatuj zobrazení Celkem dle zvolené částky
     const updateDisplay = ()=>{ totalEl.textContent = (Number(amountInput.value)||minAmount).toLocaleString('cs-CZ') + ' Kč'; };
     const enforce = ()=>{
       let v = Number(amountInput.value||0);
@@ -310,11 +313,9 @@
     amountInput.addEventListener('change', enforce);
     amountInput.addEventListener('blur', enforce);
 
-    // sync range and buttons
     const range = document.getElementById('amountRange');
     if (range){
       range.min = String(minAmount);
-      // Dynamický rozsah: minimálně 2× základ, nebo +2000 Kč buffer
       const current = Number(amountInput.value)||minAmount;
       const maxRange = Math.max(baseAmount * 2, minAmount + 2000);
       range.max = String(maxRange);
@@ -340,13 +341,11 @@
         enforce(); 
         const r=document.getElementById('amountRange'); 
         if(r){ 
-          // když překročíme maximum, posuň maximum nahoru
           if (next > Number(r.max||0)) r.max = String(next * 2);
           r.value = amountInput.value; 
         }
       };
     }
-    // Inicializuj zobrazení podle aktuální částky
     updateDisplay();
   }
   window.addEventListener('cart:change', refreshCartSummary);
@@ -357,7 +356,6 @@
     formEl.addEventListener('submit', async (ev)=>{
       ev.preventDefault();
 
-      // Pokud je košík, částka je editovatelná, ale nesmí klesnout pod min (69 Kč × ks)
       const cartItems = (window.Cart ? window.Cart.load() : []);
       let amount = Number(valByName('amount') || 0);
       if (cartItems && cartItems.length) {
@@ -374,7 +372,8 @@
       const name   = valByName('customer_name');
       const anonymous = !!document.getElementById('anonymousToggle')?.checked;
       const email  = valByName('customer_email');
-      const note   = valByName('note');
+      const paymentMessage = valByName('payment_message');
+      const deliveryNote   = valByName('delivery_note');
       const phone  = valByName('customer_phone');
       const addrLn = valByName('address_line');
       const city   = valByName('address_city');
@@ -384,12 +383,10 @@
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
       const ss = vs;
-      const msg = "Deti detem";
-      const idCents = 0;
+      const msg = ""; // vždy prázdné (nezveřejňovat)
       const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, ss, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
       await drawQR(spd);
-      // Poznámka o haléřovém identifikátoru u QR
       try {
         const qrContainer = document.getElementById('qrCode');
         if (qrContainer) {
@@ -410,23 +407,24 @@
       const orderData = {
         order_number: orderNo,
         vs: vs,
-          customer_name: name,
-          customer_email: email,
-          customer_phone: phone,
-          address_line: addrLn,
-          address_city: city,
-          address_zip: zip,
-        note,
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        address_line: addrLn,
+        address_city: city,
+        address_zip: zip,
         amount,
         message: "",
+        payment_message: paymentMessage,
+        delivery_note: deliveryNote,
         qr_png: qrDataUrl,
-            qr_code: document.getElementById('qrCode')?.innerHTML || '',
+        qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
         ss: vs,
         items: cartItems,
-            timestamp: new Date().toISOString()
-          };
-          
+        timestamp: new Date().toISOString()
+      };
+      
       const ok = await submitOrder(orderData);
       if (ok) {
         saveOrderToLocal(orderData);
