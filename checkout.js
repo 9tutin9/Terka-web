@@ -54,11 +54,12 @@
   function toNumberVS(orderNo){ return orderNo.slice(-10); }
 
   // === SPD (CZ QR platba) ===
-  function buildSPD({iban, amount, vs, msg, name, currency="CZK", bic=""}){
+  function buildSPD({iban, amount, vs, ss, msg, name, currency="CZK", bic=""}){
     if(!iban || /0000 0000 0000/.test(iban)) console.warn("Vyplňte správný IBAN v config.js (PAYCFG.IBAN).");
     const parts = ["SPD*1.0", `ACC:${iban.replace(/\s+/g,'')}`, `AM:${Number(amount).toFixed(2)}`, `CC:${currency||"CZK"}`];
     if (bic) parts.push(`BIC:${bic}`);
     if (vs) parts.push(`X-VS:${vs}`);
+    if (ss) parts.push(`X-SS:${ss}`);
     if (msg) parts.push(`MSG:${msg}`);
     if (name) parts.push(`RN:${name}`);
     return parts.join("*");
@@ -185,9 +186,7 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine,
-              amount_identifier_czk: idCents,
-              amount_note: `Poznámka: Částka obsahuje haléřový identifikátor (+${Math.round(idCents*100)} haléřů).`
+              impact_line: impactLine
             }
           );
         } catch (emailError) { console.error("Chyba e-mail zákazníkovi:", emailError); }
@@ -219,9 +218,7 @@
               mission_short: missionShort,
               charity_note: charityNote,
               impact_meals: impactMeals,
-              impact_line: impactLine,
-              amount_identifier_czk: idCents,
-              amount_note: `Poznámka: Částka obsahuje haléřový identifikátor (+${Math.round(idCents*100)} haléřů).`
+              impact_line: impactLine
             }
           );
         } catch (emailError) { console.error("Chyba e-mail adminovi:", emailError); }
@@ -386,15 +383,10 @@
 
       const orderNo = generateOrderNumber();
       const vs = toNumberVS(orderNo);
-      // Pokud anonymně, neuvádět jméno v MSG (zůstane jen číslo objednávky)
-      const msg = anonymous
-        ? `Objednavka ${orderNo}`
-        : `Objednavka ${orderNo}${note ? " — " + note : ""}`;
-      // Haléřový identifikátor (0,01–0,09 Kč) pro jednoznačné párování bez VS
-      // Odvozeno z VS, přičteno k částce, zaokrouhleno na 2 desetinná místa
-      const idCents = ((parseInt(vs, 10) % 9) + 1) / 100; // 0.01 .. 0.09
-      amount = Math.round((amount + idCents) * 100) / 100;
-      const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
+      const ss = vs;
+      const msg = "Deti detem";
+      const idCents = 0;
+      const spd = buildSPD({ iban: (cfg?.IBAN)||"", amount, vs, ss, msg, name: (cfg?.RECIPIENT)||"Děti dětem", currency: (cfg?.CURRENCY)||"CZK", bic: (cfg?.BIC)||"" });
 
       await drawQR(spd);
       // Poznámka o haléřovém identifikátoru u QR
@@ -406,10 +398,10 @@
           noteEl.style.textAlign = 'center';
           noteEl.style.color = '#777';
           noteEl.style.fontSize = '0.9rem';
-          noteEl.textContent = `Poznámka: Částka obsahuje haléřový identifikátor pro spolehlivé spárování (+${Math.round(idCents*100)} haléřů).`;
+          noteEl.textContent = `Variabilní symbol: ${vs}`;
           qrContainer.appendChild(noteEl);
         }
-      } catch(_){}
+      } catch(_){ }
       if (orderNoEl) orderNoEl.textContent = orderNo;
       const canvas = document.getElementById('qrCanvas');
       const qrDataUrl = canvas ? canvasToDataURL(canvas) : '';
@@ -426,11 +418,11 @@
           address_zip: zip,
         note,
         amount,
-        amount_identifier_czk: idCents,
-        message: anonymous ? `Objednavka ${orderNo}` : `Objednavka ${orderNo} — ${safe(name)}`,
+        message: "",
         qr_png: qrDataUrl,
             qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
+        ss: vs,
         items: cartItems,
             timestamp: new Date().toISOString()
           };
