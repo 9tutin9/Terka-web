@@ -1680,6 +1680,19 @@ body.cart-open {
 
   /* Boční odsazení pro glass-card na malých displejích */
   .glass-card { margin-left: 1rem; margin-right: 1rem; }
+
+  /* Checkout: donutit všechny boxy, aby měly okraje a nepřetékaly */
+  .checkout-page .glass-card,
+  .checkout-page .summary-card,
+  .checkout-page .delivery-section,
+  .checkout-page .qr-preview,
+  .checkout-page .sticky-help,
+  .checkout-page .note {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: calc(100% - 2rem);
+    width: auto;
+  }
 }
 
 /* Extra small phones (<= 380px) */
