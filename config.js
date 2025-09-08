@@ -17,5 +17,5 @@ window.PAYCFG = {
 };
 
 // === Supabase (vyplňte hodnotami z projektu) ===
-window.SUPABASE_URL = window.SUPABASE_URL || 'YOUR_SUPABASE_URL_HERE';
-window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY_HERE';
+window.SUPABASE_URL = window.SUPABASE_URL || 'https://giqdajlliitlwkvrmpxa.supabase.co';
+window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpcWRhamxsaWl0bHdrdnJtcHhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzU2MTMsImV4cCI6MjA3MjkxMTYxM30.LMYBAZoccew1miMieR5gHpc8PiGvHRjdCl94LraPsh0';
