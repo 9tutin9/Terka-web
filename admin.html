@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — E-shop</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <meta name="robots" content="noindex,nofollow">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><img src="images/detidetem.logo.webp" alt="Děti dětem" class="logo-mark"> Děti dětem</a>
+      <span class="muted">Admin</span>
+    </div>
+  </nav>
+
+  <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
+    <section class="glass-card">
+      <h1>Admin — Produkty❤️❤️❤️</h1>
+      <div id="authBox" class="glass-card" style="margin:16px 0;padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div id="authState" class="muted">Přihlašte se</div>
+          <button id="logoutBtn" class="btn-secondary" type="button" style="display:none">Odhlásit</button>
+        </div>
+        <form id="loginForm" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+          <input type="email" name="email" placeholder="E-mail" required style="padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+          <input type="password" name="password" placeholder="Heslo" required style="padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+          <button class="btn-primary" type="submit">Přihlásit</button>
+        </form>
+      </div>
+
+      <div id="adminUI" style="display:none">
+        <div class="glass-card" style="padding:16px">
+          <h3>Přidat / upravit produkt</h3>
+          <form id="productForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+            <input type="hidden" name="id">
+            <input name="name" placeholder="Název" required>
+            <input type="hidden" name="price" value="69">
+            <input name="stock" placeholder="Sklad (ks)" type="number" min="0" step="1">
+            <input name="diameter_mm" placeholder="Průměr (mm)" type="number" min="0" step="1">
+            <select name="category_slug" required>
+              <option value="love">Náramek lásky</option>
+              <option value="hope">Náramek naděje</option>
+              <option value="joy">Náramek radosti</option>
+              <option value="friendship">Náramek přátelství</option>
+              <option value="help">Náramek pomoci</option>
+              <option value="luck">Náramek štěstí</option>
+            </select>
+            <input name="image_url" placeholder="URL obrázku (nebo použijte storage)">
+            <div style="grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">
+              <input type="file" id="imageFile" accept="image/*">
+              <div style="display:flex;gap:8px">
+                <button id="uploadBtn" class="btn-secondary" type="button">Nahrát do Storage</button>
+                <button id="pickFromStorage" class="btn-secondary" type="button">Vybrat ze Storage</button>
+              </div>
+            </div>
+            <div style="grid-column:1/-1">
+              <img id="imagePreview" alt="Náhled" style="display:none;max-width:220px;border-radius:12px;border:1px solid rgba(0,0,0,0.08)">
+            </div>
+            <label style="grid-column:1/-1">Popis
+              <textarea name="description" rows="3" placeholder="Krátký popis" style="width:100%"></textarea>
+            </label>
+            <div style="grid-column:1/-1;display:flex;gap:8px;align-items:center">
+              <button class="btn-primary" type="submit">Uložit produkt</button>
+              <button id="resetForm" class="btn-secondary" type="button">Nový</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="glass-card" style="padding:16px;margin-top:16px">
+          <h3>Produkty</h3>
+          <div id="productsList" class="products-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Storage Picker Modal -->
+  <div id="storagePicker" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:4000;align-items:center;justify-content:center">
+    <div class="glass-card" style="width:min(92vw,900px);max-height:90vh;overflow:auto;border-radius:16px;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+        <strong>Vybrat obrázek ze Storage</strong>
+        <button id="spClose" class="btn-secondary" type="button">Zavřít</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+        <input id="spSearch" placeholder="Hledat podle názvu" style="flex:1;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
+        <button id="spReload" class="btn-secondary" type="button">Obnovit</button>
+      </div>
+      <div id="spGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button id="spPrev" class="btn-secondary" type="button">Předchozí</button>
+        <button id="spNext" class="btn-secondary" type="button">Další</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="admin.js"></script>
+  <script src="cart.js"></script>
+</body>
+</html>
+
+

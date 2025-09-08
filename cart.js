@@ -9,15 +9,26 @@
   function add(item, qty=1){
     const items = load();
     const i = items.findIndex(x=>x.id===item.id);
-    if (i>=0){ items[i].qty += qty; } else { items.push({ ...item, qty }); }
+    const maxStock = Number(item.stock||Infinity);
+    if (i>=0){
+      const nextQty = items[i].qty + qty;
+      items[i].qty = Math.min(nextQty, maxStock);
+    } else {
+      items.push({ ...item, qty: Math.min(qty, maxStock) });
+    }
     save(items);
     toast(`Přidáno do košíku: ${item.name}`);
   }
   function setQty(id, qty){
-    const items = load().map(x=> x.id===id ? { ...x, qty: Math.max(1, qty|0) } : x);
+    const items = load().map(x=>{
+      if (x.id!==id) return x;
+      const maxStock = Number(x.stock||Infinity);
+      const wanted = Math.max(1, qty|0);
+      return { ...x, qty: Math.min(wanted, maxStock) };
+    });
     save(items);
   }
-  function inc(id){ const items = load(); const it = items.find(x=>x.id===id); if(it){ it.qty+=1; save(items);} }
+  function inc(id){ const items = load(); const it = items.find(x=>x.id===id); if(it){ const maxStock=Number(it.stock||Infinity); it.qty=Math.min(it.qty+1, maxStock); save(items);} }
   function dec(id){ const items = load(); const it = items.find(x=>x.id===id); if(it){ it.qty=Math.max(1,it.qty-1); save(items);} }
   function remove(id){ const items = load().filter(x=>x.id!==id); save(items); }
   function clear(){ save([]); }
@@ -89,7 +100,7 @@
       return;
     }
     list.innerHTML = items.map(it=>`
-      <div class="cart-row" data-id="${it.id}">
+      <div class="cart-row" data-id="${it.id}" data-stock="${Number(it.stock||'')}">
         <div class="meta">
           ${it.image ? `<img src="${it.image}" alt="" loading="lazy">` : ``}
           <div>
@@ -107,8 +118,24 @@
     `).join('');
 
     // Bindy
+    // Enforce stock: disable inc at max, clamp input changes, and block inc beyond stock
+    list.querySelectorAll('.cart-row').forEach(row=>{
+      const stock = Number(row.dataset.stock||Infinity);
+      const incBtn = row.querySelector('.inc');
+      const input = row.querySelector('.val');
+      if (isFinite(stock)){
+        input.setAttribute('max', String(stock));
+        if (Number(input.value||'1') >= stock){ if (incBtn) incBtn.disabled = true; }
+      }
+    });
+
     list.querySelectorAll('.inc').forEach(btn=> btn.addEventListener('click', (e)=>{
-      const id = e.target.closest('.cart-row').dataset.id; inc(id); updateUI();
+      const row = e.target.closest('.cart-row');
+      const id = row.dataset.id;
+      const stock = Number(row.dataset.stock||Infinity);
+      const current = Number(row.querySelector('.val')?.value||'1');
+      if (isFinite(stock) && current >= stock){ toast('Není skladem více kusů.'); return; }
+      inc(id); updateUI();
     }));
     list.querySelectorAll('.dec').forEach(btn=> btn.addEventListener('click', (e)=>{
       const id = e.target.closest('.cart-row').dataset.id; dec(id); updateUI();
@@ -116,8 +143,22 @@
     list.querySelectorAll('.remove').forEach(btn=> btn.addEventListener('click', (e)=>{
       const id = e.target.closest('.cart-row').dataset.id; remove(id); updateUI();
     }));
-    list.querySelectorAll('.val').forEach(inp=> inp.addEventListener('change', (e)=>{
-      const id = e.target.closest('.cart-row').dataset.id; setQty(id, parseInt(inp.value||'1',10)); updateUI();
+    function clampAndUpdate(inpEl){
+      const row = inpEl.closest('.cart-row');
+      const stock = Number(row.dataset.stock||Infinity);
+      let want = parseInt(inpEl.value||'1',10);
+      if (!isFinite(want) || want < 1) want = 1;
+      if (isFinite(stock) && want > stock){ want = stock; }
+      const id = row.dataset.id; setQty(id, want); updateUI();
+    }
+    list.querySelectorAll('.val').forEach(inp=> inp.addEventListener('change', (e)=> clampAndUpdate(inp)));
+    list.querySelectorAll('.val').forEach(inp=> inp.addEventListener('input', (e)=> {
+      const row = inp.closest('.cart-row');
+      const stock = Number(row.dataset.stock||Infinity);
+      let v = parseInt(inp.value||'1',10);
+      if (!isFinite(v) || v < 1) v = 1;
+      if (isFinite(stock) && v > stock) v = stock;
+      inp.value = String(v);
     }));
   }
 
@@ -149,6 +190,7 @@
       name = (pageTitle || 'Produkt') + variant;
     }
     const price = parseFloat(btn.getAttribute('data-price') || btn.dataset.price);
+    const stock = parseInt(btn.getAttribute('data-stock') || btn.dataset.stock || '', 10);
     // Preferuj reálný obrázek z karty; data-image použij jen jako fallback
     let image = btn.getAttribute('data-image') || btn.dataset.image || '';
     const cardImg = btn.closest('.product-card')?.querySelector('img');
@@ -160,7 +202,7 @@
       if (q) qty = parseInt(q.value||'1',10);
     }
     if (!price || price<0){ alert('Chybí cena produktu (data-price).'); return; }
-    add({id, name, price, image}, qty);
+    add({id, name, price, image, stock: isFinite(stock) ? stock : undefined}, qty);
     ensureUI(); open();
   }, false);
 

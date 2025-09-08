@@ -15,3 +15,7 @@ window.PAYCFG = {
   EMAILJS_TEMPLATE_ADMIN: "template_b2i0ubi",
   
 };
+
+// === Supabase (vyplňte hodnotami z projektu) ===
+window.SUPABASE_URL = window.SUPABASE_URL || 'https://giqdajlliitlwkvrmpxa.supabase.co';
+window.SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdpcWRhamxsaWl0bHdrdnJtcHhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczMzU2MTMsImV4cCI6MjA3MjkxMTYxM30.LMYBAZoccew1miMieR5gHpc8PiGvHRjdCl94LraPsh0';

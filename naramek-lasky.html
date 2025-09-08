@@ -24,10 +24,12 @@
       </ul>
     </div>
   </nav>
+  <a href="eshop.html" aria-label="Zpět na výběr kategorií" title="Zpět"
+     style="position:fixed;left:1rem;top:6rem;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;background:var(--primary,#0077b6);color:#fff;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,0.15);z-index:1100;border:1px solid rgba(255,255,255,0.6)">←</a>
 
   <main class="container" style="max-width:1100px;margin:120px auto 60px;padding:24px">
     <section class="glass-card products-section">
-      <h1>Náramek lásky — výběr</h1>
+      <h1>Náramek lásky</h1>
       <p class="muted">Vyberte si libovolný styl. Každý produkt = 69 Kč = 3 porce jídla.</p>
       <div class="products-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px">
         <div class="product-card glass-card">
@@ -93,6 +95,10 @@
 
   <script src="ornament-bg.js" defer></script>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="shop.js"></script>
   <script src="cart.js"></script>
 </body>
 </html>
