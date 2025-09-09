@@ -313,6 +313,7 @@
 
       // Odeslat e-mail zákazníkovi přes Resend
       try {
+        const cartItems = orderData.items || [];
         const customerHtml = window.EmailHelper.generateCustomerEmail({
           ...orderData,
           items: cartItems
@@ -346,7 +347,7 @@
       }
 
       // Fallback pro starý EmailJS (pokud je potřeba)
-      if (cfg.EMAILJS_PUBLIC_KEY && cfg.EMAILJS_SERVICE_ID && cfg.EMAILJS_TEMPLATE_CUSTOMER) {
+      if (cfg.EMAILJS_PUBLIC_KEY && cfg.EMAILJS_SERVICE_ID && cfg.EMAILJS_TEMPLATE_CUSTOMER && typeof emailjs !== 'undefined') {
         try {
           await emailjs.send(
             cfg.EMAILJS_SERVICE_ID,
@@ -379,7 +380,7 @@
           );
         } catch (emailError) { console.error("Chyba e-mail zákazníkovi:", emailError); }
       }
-      if (cfg.EMAILJS_PUBLIC_KEY && cfg.EMAILJS_SERVICE_ID && cfg.EMAILJS_TEMPLATE_ADMIN) {
+      if (cfg.EMAILJS_PUBLIC_KEY && cfg.EMAILJS_SERVICE_ID && cfg.EMAILJS_TEMPLATE_ADMIN && typeof emailjs !== 'undefined') {
         try {
           await emailjs.send(
             cfg.EMAILJS_SERVICE_ID,
