@@ -27,7 +27,7 @@
         <div class="product-card glass-card" style="${cardStyle}">
           ${img}
           <div class="muted" style="margin:4px 0 -4px 0;font-size:0.9rem">
-            <span style="${stockStyle}">Sklad: ${Math.max(0, stock)} ks</span>${(typeof p.diameter_mm === 'number' && isFinite(p.diameter_mm)) ? ` · ⌀ ${p.diameter_mm} mm` : ''}
+            <span style="${stockStyle}">Sklad: ${Math.max(0, stock)} ks</span>${p.size ? ` · ${p.size}` : ''}
           </div>
           <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
             <input id="${qtyId}" type="number" min="1" ${soldOut ? 'disabled' : `max="${Math.max(0, stock)}"`} value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
@@ -45,7 +45,7 @@
     const grid = document.querySelector('.products-section .products-grid');
     if (!grid) return;
     grid.innerHTML = '<div class="muted">Načítám...</div>';
-    const { data, error } = await sb.from('products').select('id,name,price,stock,diameter_mm,image_url,description,category_slug,active,created_at').eq('category_slug', slug).eq('active', true).order('created_at', { ascending: true });
+    const { data, error } = await sb.from('products').select('id,name,price,stock,size,image_url,description,category_slug,active,created_at').eq('category_slug', slug).eq('active', true).order('created_at', { ascending: true });
     if (error){ grid.innerHTML = `<div class="muted">Chyba načítání: ${error.message}</div>`; return; }
     renderCards(grid, data);
   }

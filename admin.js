@@ -98,7 +98,7 @@
     productsList.innerHTML = '<div class="muted">Načítám...</div>';
     const { data, error } = await sb
       .from('products')
-      .select('id,name,price,stock,diameter_mm,image_url,category:categories(slug,name)')
+      .select('id,name,price,stock,size,image_url,category:categories(slug,name)')
       .order('created_at', { ascending: false });
     if (error){ productsList.innerHTML = `<div class="muted">Chyba: ${error.message}</div>`; return; }
     
@@ -114,7 +114,7 @@
         ${p.image_url ? `<img src="${p.image_url}" alt="" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:12px">` : ''}
         <div style="padding:8px 0">
           <div style="font-weight:600">${p.name||''}</div>
-          <div class="muted">${(p.category?.name)||''} · ${(Number(p.price)||0).toLocaleString('cs-CZ')} Kč · <span style="${stockStyle}">Sklad: ${stock} ks</span>${typeof p.diameter_mm==='number' ? ` · ⌀ ${p.diameter_mm} mm` : ''}</div>
+          <div class="muted">${(p.category?.name)||''} · ${(Number(p.price)||0).toLocaleString('cs-CZ')} Kč · <span style="${stockStyle}">Sklad: ${stock} ks</span>${p.size ? ` · ${p.size}` : ''}</div>
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn-secondary" data-edit="${p.id}">Upravit</button>
@@ -153,7 +153,7 @@
     productForm.image_url.value = data.image_url || '';
     productForm.description.value = data.description || '';
     if (productForm.stock) productForm.stock.value = Number(data.stock||0);
-    if (productForm.diameter_mm) productForm.diameter_mm.value = (data.diameter_mm ?? '');
+    if (productForm.size) productForm.size.value = (data.size ?? '');
     window.scrollTo({ top: productForm.getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth' });
   }
 
@@ -183,7 +183,7 @@
         image_url: productForm.image_url.value.trim() || null,
         description: productForm.description.value.trim() || null,
         stock: Number(productForm.stock?.value||0) || 0,
-        diameter_mm: productForm.diameter_mm?.value ? Number(productForm.diameter_mm.value) : null,
+        size: productForm.size?.value || null,
       };
       try{
         if (productForm.id.value){
@@ -499,7 +499,7 @@
           <span style="font-weight: 600; color: #3b82f6;">${item.qty}x</span>
           <span style="font-weight: 600; color: #10b981;">${(item.price || 69).toLocaleString('cs-CZ')} Kč</span>
         </div>
-        ${item.diameter_mm ? `<div style="margin-top: 8px; color: #666; font-size: 14px;">Průměr: ${item.diameter_mm}mm</div>` : ''}
+        ${item.size ? `<div style="margin-top: 8px; color: #666; font-size: 14px;">Velikost: ${item.size}</div>` : ''}
       </div>
     `).join('');
 
