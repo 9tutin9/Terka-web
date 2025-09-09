@@ -628,48 +628,66 @@
             height: 46mm;
             border: 1px solid #000;
             box-sizing: border-box;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
           }
           .label-header {
-            background: #f0f0f0;
-            padding: 2mm;
-            border-bottom: 1px solid #000;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 3mm;
+            border-bottom: 2px solid #5f3dc4;
             font-weight: bold;
             text-align: center;
+            font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
           }
-          .address {
-            padding: 3mm;
-            line-height: 1.2;
-          }
-          .customer-name {
-            font-weight: bold;
-            font-size: 11px;
-            margin-bottom: 1mm;
-          }
-          .address-line {
-            margin-bottom: 0.5mm;
-          }
-          .city-zip {
-            font-weight: bold;
-          }
-          .order-info {
+          .logo-section {
             position: absolute;
-            bottom: 1mm;
+            top: 2mm;
             right: 2mm;
-            font-size: 8px;
-            color: #666;
-          }
-          .qr-placeholder {
-            position: absolute;
-            bottom: 1mm;
-            left: 2mm;
-            width: 15mm;
-            height: 15mm;
-            border: 1px solid #ccc;
+            width: 20mm;
+            height: 20mm;
+            background: white;
+            border: 2px solid #6c5ce7;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6px;
-            color: #999;
+            font-size: 8px;
+            font-weight: bold;
+            color: #6c5ce7;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          }
+          .address {
+            padding: 3mm;
+            line-height: 1.3;
+            margin-right: 22mm;
+          }
+          .customer-name {
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 1mm;
+            color: #2d3436;
+          }
+          .address-line {
+            margin-bottom: 0.5mm;
+            color: #636e72;
+          }
+          .city-zip {
+            font-weight: bold;
+            color: #2d3436;
+            font-size: 11px;
+          }
+          .order-info {
+            position: absolute;
+            bottom: 2mm;
+            right: 2mm;
+            font-size: 8px;
+            color: #636e72;
+            background: rgba(255,255,255,0.8);
+            padding: 2mm;
+            border-radius: 4px;
+            border: 1px solid #ddd;
           }
         </style>
       </head>
@@ -677,17 +695,19 @@
         <div class="label-header">
           DODACÍ ŠTÍTEK - ${order.order_number}
         </div>
+        <div class="logo-section">
+          <div style="font-size: 10px; font-weight: bold; color: #6c5ce7;">
+            DETIDETEM<br>
+            <span style="font-size: 6px; color: #a29bfe;">NÁRAMKY POMOCI</span>
+          </div>
+        </div>
         <div class="address">
           <div class="customer-name">${order.customer_name || 'N/A'}</div>
           <div class="address-line">${order.address_line || ''}</div>
           <div class="city-zip">${order.address_zip || ''} ${order.address_city || ''}</div>
         </div>
-        <div class="qr-placeholder">
-          QR<br>${order.order_number}
-        </div>
         <div class="order-info">
-          VS: ${order.vs || 'N/A'}<br>
-          ${order.amount || 0} Kč
+          VS: ${order.vs || 'N/A'}
         </div>
       </body>
       </html>
