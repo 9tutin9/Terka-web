@@ -637,108 +637,185 @@
             padding: 0;
             width: 96mm;
             height: 46mm;
-            border: 2px solid #000;
             box-sizing: border-box;
-            background: #ffffff;
+            background: #a8e6cf;
             position: relative;
+            overflow: hidden;
           }
+          
+          /* Decorative patterns */
+          body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+              radial-gradient(circle at 5mm 5mm, #2d5a27 2px, transparent 2px),
+              radial-gradient(circle at 91mm 5mm, #2d5a27 2px, transparent 2px),
+              radial-gradient(circle at 5mm 41mm, #2d5a27 2px, transparent 2px),
+              radial-gradient(circle at 91mm 41mm, #2d5a27 2px, transparent 2px);
+            background-size: 10mm 10mm;
+            opacity: 0.3;
+            pointer-events: none;
+          }
+          
           .label-header {
-            background: linear-gradient(135deg, #000000 0%, #333333 100%);
-            color: white;
-            padding: 4mm;
-            border-bottom: 3px solid #000;
+            background: #b8f2d6;
+            color: #2d5a27;
+            padding: 3mm 4mm;
+            border-radius: 20px 20px 0 0;
             font-weight: 700;
             text-align: left;
-            font-size: 14px;
+            font-size: 12px;
             font-family: 'Poppins', sans-serif;
             position: relative;
             letter-spacing: 0.5px;
-            padding-left: 2mm;
-            padding-right: 20mm;
+            display: flex;
+            align-items: center;
+            gap: 3mm;
           }
+          
+          .truck-icon {
+            width: 8mm;
+            height: 8mm;
+            background: #2d5a27;
+            border-radius: 2px;
+            position: relative;
+          }
+          
+          .truck-icon::before {
+            content: '';
+            position: absolute;
+            top: 2mm;
+            left: 1mm;
+            width: 4mm;
+            height: 2mm;
+            background: #a8e6cf;
+            border-radius: 1px;
+          }
+          
+          .truck-icon::after {
+            content: '';
+            position: absolute;
+            top: 1mm;
+            right: 1mm;
+            width: 2mm;
+            height: 3mm;
+            background: #a8e6cf;
+            border-radius: 50%;
+          }
+          
           .logo-section {
             position: absolute;
-            top: 3mm;
-            right: 3mm;
-            width: 18mm;
-            height: 18mm;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid #000;
-            border-radius: 12px;
+            top: 2mm;
+            right: 2mm;
+            width: 16mm;
+            height: 16mm;
+            background: #b8f2d6;
+            border: 2px solid #2d5a27;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 2px 4px rgba(45, 90, 39, 0.2);
           }
+          
           .logo-section img {
-            width: 14mm;
-            height: 14mm;
+            width: 12mm;
+            height: 12mm;
             object-fit: contain;
             filter: contrast(1.2);
           }
+          
           .logo-text {
-            font-size: 6px;
+            font-size: 5px;
             font-weight: 700;
-            color: #000;
-            margin-top: 1mm;
+            color: #2d5a27;
+            margin-top: 0.5mm;
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.3px;
           }
+          
           .address {
-            padding: 2mm;
-            line-height: 1.3;
-            text-align: center;
-            margin-top: 2mm;
-            margin-left: 4mm;
-            margin-right: 4mm;
+            padding: 3mm;
+            line-height: 1.4;
+            text-align: left;
+            margin: 2mm;
+            background: #b8f2d6;
+            border-radius: 8px;
+            border: 2px solid #2d5a27;
+            position: relative;
           }
+          
+          .address::before {
+            content: '';
+            position: absolute;
+            top: -1mm;
+            right: -1mm;
+            width: 8mm;
+            height: 8mm;
+            background: #2d5a27;
+            border-radius: 50%;
+            opacity: 0.1;
+          }
+          
           .customer-name {
             font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 2mm;
-            color: #000;
+            font-size: 13px;
+            margin-bottom: 1mm;
+            color: #2d5a27;
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.3px;
           }
+          
           .address-line {
-            margin-bottom: 1mm;
-            color: #333;
+            margin-bottom: 0.5mm;
+            color: #2d5a27;
             font-weight: 500;
-            font-size: 11px;
+            font-size: 10px;
           }
+          
           .city-zip {
             font-weight: 700;
-            color: #000;
-            font-size: 12px;
+            color: #2d5a27;
+            font-size: 11px;
             font-family: 'Poppins', sans-serif;
             letter-spacing: 0.3px;
           }
+          
           .order-info {
             position: absolute;
             bottom: 2mm;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 7px;
-            color: #000;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            left: 2mm;
+            font-size: 8px;
+            color: #2d5a27;
+            background: #b8f2d6;
             padding: 2mm;
             border-radius: 6px;
-            border: 1px solid #000;
+            border: 2px solid #2d5a27;
             text-align: center;
             font-weight: 600;
             font-family: 'Poppins', sans-serif;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
             letter-spacing: 0.2px;
+          }
+          
+          .contact-info {
+            position: absolute;
+            bottom: 2mm;
+            right: 2mm;
+            font-size: 6px;
+            color: #2d5a27;
+            text-align: right;
+            line-height: 1.2;
           }
         </style>
       </head>
       <body>
         <div class="label-header">
+          <div class="truck-icon"></div>
           DODACÍ ŠTÍTEK - ${order.order_number}
         </div>
         <div class="logo-section">
@@ -752,6 +829,11 @@
         </div>
         <div class="order-info">
           VS: ${order.vs || 'N/A'}
+        </div>
+        <div class="contact-info">
+          ✉️ detidetem.eu@gmail.com<br>
+          @detidetem<br>
+          www.detidetem.eu
         </div>
       </body>
       </html>
