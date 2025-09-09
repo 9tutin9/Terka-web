@@ -159,15 +159,31 @@
       // Pro každou položku v košíku odečteme sklad
       for (const item of cartItems) {
         if (item.id && item.qty) {
-          const { error } = await window.sb
+          // Nejdřív načteme aktuální sklad
+          const { data: product, error: fetchError } = await window.sb
             .from('products')
-            .update({ 
-              stock: window.sb.raw(`stock - ${Number(item.qty)}`)
-            })
+            .select('stock')
+            .eq('id', item.id)
+            .single();
+          
+          if (fetchError) {
+            console.error('Chyba při načítání skladu pro produkt', item.name, fetchError);
+            continue;
+          }
+          
+          // Odečteme množství
+          const newStock = Math.max(0, (product.stock || 0) - Number(item.qty));
+          
+          // Aktualizujeme sklad
+          const { error: updateError } = await window.sb
+            .from('products')
+            .update({ stock: newStock })
             .eq('id', item.id);
           
-          if (error) {
-            console.error('Chyba při aktualizaci skladu pro produkt', item.name, error);
+          if (updateError) {
+            console.error('Chyba při aktualizaci skladu pro produkt', item.name, updateError);
+          } else {
+            console.log(`Sklad aktualizován pro ${item.name}: ${product.stock} → ${newStock}`);
           }
         }
       }
