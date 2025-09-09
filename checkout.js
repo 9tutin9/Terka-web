@@ -357,6 +357,13 @@
 
       // Definovat cartItems pro oba e-maily
       const cartItems = orderData.items || [];
+      
+      // Debug: zkontroluj QR kód
+      console.log('Order data for email:', {
+        qr_png: orderData.qr_png ? 'Present' : 'Missing',
+        qr_png_length: orderData.qr_png ? orderData.qr_png.length : 0,
+        items: cartItems.length
+      });
 
       // Odeslat e-mail zákazníkovi přes Resend
       try {
@@ -640,8 +647,16 @@
       } catch(_){ }
       if (orderNoEl) orderNoEl.textContent = orderNo;
       const canvas = document.getElementById('qrCanvas');
-      const qrDataUrl = canvas ? canvasToDataURL(canvas) : '';
-      console.log('QR Canvas:', canvas, 'QR DataURL:', qrDataUrl ? 'Generated' : 'Empty');
+      let qrDataUrl = '';
+      if (canvas) {
+        try {
+          qrDataUrl = canvasToDataURL(canvas);
+          console.log('QR Canvas:', canvas, 'QR DataURL:', qrDataUrl ? 'Generated' : 'Empty');
+          console.log('QR DataURL length:', qrDataUrl.length);
+        } catch (error) {
+          console.error('Error generating QR DataURL:', error);
+        }
+      }
       if (downloadBtn && qrDataUrl){ downloadBtn.href = qrDataUrl; downloadBtn.setAttribute('aria-disabled','false'); downloadBtn.download = `qr-platba-${orderNo}.png`; }
 
       const orderData = {
