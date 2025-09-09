@@ -616,136 +616,98 @@
       return;
     }
 
-    // Create label HTML using your envelope design
+    // Create simple label HTML
     const labelHtml = `
       <!DOCTYPE html>
-      <html lang="cs">
+      <html>
       <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8">
         <title>Dodací štítek - ${order.order_number}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
-          :root{
-            --bg:#ffffff;
-            --field:#f6f7f8;
-            --dark:#0e3f37;
-            --ink:#0b1d18;
+          @page {
+            size: 100mm 50mm;
+            margin: 0;
           }
-          *{box-sizing:border-box}
-          html,body{height:100%}
-          body{
-            margin:0; font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";
-            background:var(--bg); display:grid; place-items:center; padding:24px;
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+            width: 100mm;
+            height: 50mm;
+            box-sizing: border-box;
+            background: white;
+            border: 1px solid #ccc;
           }
-          .card{
-            width:min(900px,95vw);
-            aspect-ratio: 780/550;
-            background:var(--bg);
-            border-radius:24px; position:relative; overflow:hidden;
-            box-shadow:0 10px 30px rgba(0,0,0,.08);
-            border:1px solid rgba(0,0,0,.06);
+          .header {
+            background: #f0f0f0;
+            padding: 2mm;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            border-bottom: 1px solid #ccc;
           }
-          .card::before{
-            content:""; position:absolute; inset:0; pointer-events:none;
-            background: url(images/detidetem.logo.png) center/75% auto no-repeat; opacity:.12;
-            filter: drop-shadow(0 2px 0 rgba(0,0,0,.02));
+          .content {
+            padding: 3mm;
+            display: flex;
+            justify-content: space-between;
+            height: calc(100% - 15mm);
           }
-          .dot-corner{position:absolute; width:110px; height:110px; background:radial-gradient(circle at 7px 7px, var(--dark) 3px, transparent 3px) 0 0/18px 18px; opacity:.4}
-          .dot-corner.tl{left:-10px; top:-10px; border-radius:0 0 100% 0}
-          .dot-corner.br{right:-10px; bottom:-10px; border-radius:100% 0 0 0}
-          .wavy{position:absolute; height:14px; width:160px; filter:drop-shadow(0 1px rgba(0,0,0,.05))}
-          .wavy.top{right:18px; top:14px}
-          .wavy.bottom{left:18px; bottom:14px; transform:rotate(180deg)}
-          .side-pill{position:absolute; top:60px; bottom:60px; width:14px; border:3px solid var(--dark); border-radius:999px}
-          .side-pill.left{left:12px}
-          .side-pill.right{right:12px}
-          .header{position:absolute; left:40px; right:40px; top:32px; height:72px; display:flex; align-items:center; gap:8px}
-          .badge{width:64px; height:64px; border-radius:999px; background:var(--dark); display:grid; place-items:center}
-          .title-pill{flex:1; height:100%; background:#fff; border-radius:999px; display:flex; align-items:center; padding:0 24px; border:1px solid rgba(0,0,0,.06)}
-          .title{font-weight:700; font-size:34px; color:#0b1d18; letter-spacing:.3px; text-shadow: none}
-          .envelope{position:absolute; inset:124px 24px 24px 24px;}
-          .hint{font-size:14px; color:#32584f; margin-bottom:8px}
-          .address-box{position:absolute; max-width:56%;}
-          .sender{top:0; left:0;}
-          .recipient{right:0; bottom:0; text-align:left}
-          .label{font-weight:600; color:#123b33; margin-bottom:8px}
-          .field{background:var(--field); border-radius:16px; padding:14px 18px; border:1px solid rgba(0,0,0,.08); margin-bottom:10px}
-          .line{height:2px; background:#173f36; opacity:.7; border-radius:2px}
-          .qr-section{position:absolute; top:20px; right:20px; text-align:center}
-          .qr-code{width:60px; height:60px; border:1px solid var(--dark); border-radius:8px}
-          .vs{font-size:12px; font-weight:600; color:var(--dark); margin-top:4px}
-          
-          @media print{
-            @page {
-              size: 100mm 50mm;
-              margin: 0;
-            }
-            body{padding:0; display:block}
-            .card{
-              width:100mm; height:50mm; aspect-ratio: unset; box-shadow:none; border:none; border-radius:0; position:relative;
-            }
-            .wavy,.dot-corner,.side-pill{display:none}
-            .card::before{opacity:.08}
-            .header{position:absolute; left:2mm; right:2mm; top:2mm; height:6mm; display:flex; align-items:center; gap:2mm}
-            .badge{width:4mm; height:4mm; font-size:8px}
-            .title{font-size:8px; letter-spacing:0.1px}
-            .envelope{position:absolute; inset:10mm 2mm 2mm 2mm}
-            .address-box{max-width:100%}
-            .field{padding:1mm 2mm; margin-bottom:1mm; font-size:6px; border-radius:4px}
-            .label{font-size:5px; margin-bottom:1mm}
-            .line{height:1px; margin:0.5mm 0}
-            .hint{font-size:4px; margin-bottom:1mm}
-            .qr-code{width:12mm; height:12mm; border:0.5px solid var(--dark); position:absolute; top:2mm; right:2mm}
-            .order-info{position:absolute; bottom:2mm; left:2mm; font-size:4px; color:var(--dark); font-weight:600}
+          .address {
+            flex: 1;
+            margin-right: 2mm;
+          }
+          .logo-section {
+            width: 20mm;
+            text-align: center;
+            border-left: 1px solid #ccc;
+            padding-left: 2mm;
+          }
+          .logo-section img {
+            max-width: 15mm;
+            height: auto;
+          }
+          .customer-name {
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 1mm;
+          }
+          .address-line {
+            margin-bottom: 0.5mm;
+            font-size: 9px;
+          }
+          .city-zip {
+            font-weight: bold;
+            font-size: 10px;
+          }
+          .order-info {
+            position: absolute;
+            bottom: 2mm;
+            right: 2mm;
+            font-size: 8px;
+            color: #666;
           }
         </style>
       </head>
       <body>
-        <div class="card" role="region" aria-label="Dodací štítek">
-          <div class="dot-corner tl"></div>
-          <div class="dot-corner br"></div>
-          <div class="wavy top"></div>
-          <div class="wavy bottom"></div>
-          <div class="side-pill left"></div>
-          <div class="side-pill right"></div>
-          
-          <div class="header">
-            <div class="badge">🚚</div>
-            <div class="title-pill">
-              <div class="title">DODACÍ ŠTÍTEK #${order.order_number}</div>
-            </div>
+        <div class="header">
+          DODACÍ ŠTÍTEK - ${order.order_number}
+        </div>
+        
+        <div class="content">
+          <div class="address">
+            <div class="customer-name">${order.customer_name || 'N/A'}</div>
+            <div class="address-line">${order.address_line || ''}</div>
+            <div class="city-zip">${order.address_zip || ''} ${order.address_city || ''}</div>
           </div>
           
-          <div class="envelope">
-            <div class="address-box sender">
-              <div class="hint">Odesílatel:</div>
-              <div class="field">
-                <div class="label">Děti dětem</div>
-                <div class="line"></div>
-                <div class="line"></div>
-                <div>detidetem.eu@gmail.com</div>
-              </div>
-            </div>
-            
-            <div class="address-box recipient">
-              <div class="hint">Příjemce:</div>
-              <div class="field">
-                <div class="label">${order.customer_name || 'N/A'}</div>
-                <div>${order.address_line || ''}</div>
-                <div>${order.address_zip || ''} ${order.address_city || ''}</div>
-              </div>
-            </div>
+          <div class="logo-section">
+            <img src="images/detidetem.logo.png" alt="Děti dětem">
           </div>
-          
-          <div class="qr-section">
-            <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${order.vs || 'N/A'}" alt="QR kód pro platbu">
-            <div class="vs">VS: ${order.vs || 'N/A'}</div>
-          </div>
-          
-          <div class="order-info">${order.amount || 'N/A'} Kč</div>
+        </div>
+        
+        <div class="order-info">
+          VS: ${order.vs || 'N/A'} | ${order.amount || 'N/A'} Kč
         </div>
       </body>
       </html>
