@@ -423,7 +423,7 @@
                     <label for="shipped_${order.id || order.order_number}">Odesláno</label>
                   </div>
                   <div style="margin-top: 8px;">
-                    <button class="btn btn-outline" onclick="deleteOrder('${order.id || order.order_number}')" style="font-size: 11px; padding: 4px 8px; background: #fee2e2; color: #dc2626; border-color: #fecaca;">
+                    <button onclick="deleteOrder('${order.id || order.order_number}')" style="font-size: 11px; padding: 4px 8px; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; border-radius: 4px; cursor: pointer;">
                       🗑️ Smazat
                     </button>
                   </div>
