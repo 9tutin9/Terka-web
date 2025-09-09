@@ -696,9 +696,9 @@
           DODACÍ ŠTÍTEK - ${order.order_number}
         </div>
         <div class="logo-section">
-          <div style="font-size: 10px; font-weight: bold; color: #6c5ce7;">
-            DETIDETEM<br>
-            <span style="font-size: 6px; color: #a29bfe;">NÁRAMKY POMOCI</span>
+          <img src="images/detidetem.logo.webp" alt="Děti dětem" style="width: 16mm; height: 16mm; object-fit: contain;">
+          <div style="font-size: 6px; font-weight: bold; color: #6c5ce7; margin-top: 1mm;">
+            Děti dětem
           </div>
         </div>
         <div class="address">
