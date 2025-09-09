@@ -624,91 +624,120 @@
         <meta charset="UTF-8">
         <title>Dodací štítek - ${order.order_number}</title>
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+          
           @page {
             size: 100mm 50mm;
             margin: 2mm;
           }
           body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 10px;
             margin: 0;
             padding: 0;
             width: 96mm;
             height: 46mm;
-            border: 1px solid #000;
+            border: 2px solid #000;
             box-sizing: border-box;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: #ffffff;
+            position: relative;
           }
           .label-header {
-            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
             color: white;
-            padding: 3mm;
-            border-bottom: 2px solid #5f3dc4;
-            font-weight: bold;
+            padding: 4mm;
+            border-bottom: 3px solid #000;
+            font-weight: 700;
             text-align: center;
-            font-size: 12px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             position: relative;
+            letter-spacing: 0.5px;
           }
           .logo-section {
             position: absolute;
-            top: 2mm;
-            right: 2mm;
-            width: 15mm;
-            height: 15mm;
-            background: white;
-            border: 2px solid #6c5ce7;
-            border-radius: 8px;
+            top: 3mm;
+            right: 3mm;
+            width: 18mm;
+            height: 18mm;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #000;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
           }
           .logo-section img {
-            width: 12mm;
-            height: 12mm;
+            width: 14mm;
+            height: 14mm;
             object-fit: contain;
+            filter: contrast(1.2);
           }
           .logo-text {
-            font-size: 5px;
-            font-weight: bold;
-            color: #6c5ce7;
-            margin-top: 0.5mm;
+            font-size: 6px;
+            font-weight: 700;
+            color: #000;
+            margin-top: 1mm;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
           }
           .address {
-            padding: 3mm;
-            line-height: 1.3;
+            padding: 4mm;
+            line-height: 1.4;
             text-align: center;
-            margin-top: 2mm;
+            margin-top: 3mm;
+            background: rgba(248, 250, 252, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 8px;
+            margin-left: 2mm;
+            margin-right: 2mm;
+            border: 1px solid rgba(0,0,0,0.1);
           }
           .customer-name {
-            font-weight: bold;
-            font-size: 12px;
-            margin-bottom: 1mm;
-            color: #2d3436;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 2mm;
+            color: #000;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
           }
           .address-line {
-            margin-bottom: 0.5mm;
-            color: #636e72;
+            margin-bottom: 1mm;
+            color: #333;
+            font-weight: 500;
+            font-size: 11px;
           }
           .city-zip {
-            font-weight: bold;
-            color: #2d3436;
-            font-size: 11px;
+            font-weight: 700;
+            color: #000;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
           }
           .order-info {
             position: absolute;
-            bottom: 2mm;
+            bottom: 3mm;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 8px;
-            color: #636e72;
-            background: rgba(255,255,255,0.8);
-            padding: 2mm;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+            font-size: 9px;
+            color: #000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 3mm;
+            border-radius: 8px;
+            border: 2px solid #000;
             text-align: center;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            letter-spacing: 0.3px;
           }
         </style>
       </head>
@@ -717,7 +746,7 @@
           DODACÍ ŠTÍTEK - ${order.order_number}
         </div>
         <div class="logo-section">
-          <img src="images/detidetem.logo.webp" alt="Děti dětem">
+          <img src="images/detidetem.logo.png" alt="Děti dětem">
           <div class="logo-text">Děti dětem</div>
         </div>
         <div class="address">
