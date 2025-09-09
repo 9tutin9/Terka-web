@@ -358,6 +358,7 @@
             <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Stav</th>
             <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">Datum</th>
             <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Odesláno</th>
+            <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Štítek</th>
           </tr>
         </thead>
         <tbody>
@@ -427,6 +428,11 @@
                       🗑️ Smazat
                     </button>
                   </div>
+                </td>
+                <td style="padding:12px;text-align:center">
+                  <button onclick="printShippingLabel('${order.id || order.order_number}')" style="font-size: 11px; padding: 4px 8px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    🏷️ Tisk štítku
+                  </button>
                 </td>
               </tr>
             `;
@@ -577,6 +583,120 @@
   // Make deleteOrder globally available
   window.deleteOrder = deleteOrder;
 
+  // Print shipping label
+  function printShippingLabel(orderId) {
+    const order = allOrders.find(o => (o.id || o.order_number) === orderId);
+    if (!order) {
+      alert('Objednávka nenalezena');
+      return;
+    }
+
+    // Check if order has address
+    if (!order.address_line && !order.address_city && !order.address_zip) {
+      alert('Objednávka nemá dodací adresu');
+      return;
+    }
+
+    // Create label HTML
+    const labelHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Dodací štítek - ${order.order_number}</title>
+        <style>
+          @page {
+            size: 100mm 50mm;
+            margin: 2mm;
+          }
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 0;
+            width: 96mm;
+            height: 46mm;
+            border: 1px solid #000;
+            box-sizing: border-box;
+          }
+          .label-header {
+            background: #f0f0f0;
+            padding: 2mm;
+            border-bottom: 1px solid #000;
+            font-weight: bold;
+            text-align: center;
+          }
+          .address {
+            padding: 3mm;
+            line-height: 1.2;
+          }
+          .customer-name {
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 1mm;
+          }
+          .address-line {
+            margin-bottom: 0.5mm;
+          }
+          .city-zip {
+            font-weight: bold;
+          }
+          .order-info {
+            position: absolute;
+            bottom: 1mm;
+            right: 2mm;
+            font-size: 8px;
+            color: #666;
+          }
+          .qr-placeholder {
+            position: absolute;
+            bottom: 1mm;
+            left: 2mm;
+            width: 15mm;
+            height: 15mm;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            color: #999;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="label-header">
+          DODACÍ ŠTÍTEK - ${order.order_number}
+        </div>
+        <div class="address">
+          <div class="customer-name">${order.customer_name || 'N/A'}</div>
+          <div class="address-line">${order.address_line || ''}</div>
+          <div class="city-zip">${order.address_zip || ''} ${order.address_city || ''}</div>
+        </div>
+        <div class="qr-placeholder">
+          QR<br>${order.order_number}
+        </div>
+        <div class="order-info">
+          VS: ${order.vs || 'N/A'}<br>
+          ${order.amount || 0} Kč
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Open in new window for printing
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(labelHtml);
+    printWindow.document.close();
+    
+    // Auto print after a short delay
+    setTimeout(() => {
+      printWindow.print();
+    }, 500);
+  }
+
+  // Make printShippingLabel globally available
+  window.printShippingLabel = printShippingLabel;
+
   // Migrace objednávek z Google Sheets
   async function migrateOrdersFromSheets() {
     if (!requireSB()) return;
@@ -584,7 +704,11 @@
     try {
       console.log('🔄 Začínám migraci objednávek...');
       
-      // Simulace dat z Google Sheets - nahraď skutečnými daty
+      // Načti skutečné objednávky z Google Sheets
+      const sheetId = '1bdFnnpZ7dVJImOr8qmzK7_wN2dvhmjSB8VB2Kk4U1gE';
+      const sheetName = 'Objednávky';
+      
+      // Pro teď použijeme mock data, ale můžeme to upravit později
       const mockOrders = [
         {
           order_number: '20250101001',
