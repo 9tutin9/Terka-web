@@ -422,6 +422,11 @@
                     <input type="checkbox" id="shipped_${order.id || order.order_number}" ${isShipped ? 'checked' : ''} onchange="updateShippedStatus('${order.id || order.order_number}', this.checked)">
                     <label for="shipped_${order.id || order.order_number}">Odesláno</label>
                   </div>
+                  <div style="margin-top: 8px;">
+                    <button class="btn btn-outline" onclick="deleteOrder('${order.id || order.order_number}')" style="font-size: 11px; padding: 4px 8px; background: #fee2e2; color: #dc2626; border-color: #fecaca;">
+                      🗑️ Smazat
+                    </button>
+                  </div>
                 </td>
               </tr>
             `;
@@ -539,6 +544,38 @@
 
   // Make showOrderAddress globally available
   window.showOrderAddress = showOrderAddress;
+
+  // Delete order function
+  async function deleteOrder(orderId) {
+    if (!requireSB()) return;
+    
+    if (!confirm('Opravdu chcete smazat tuto objednávku? Tato akce je nevratná!')) {
+      return;
+    }
+    
+    try {
+      const { error } = await window.sb
+        .from('orders')
+        .delete()
+        .eq('id', orderId);
+        
+      if (error) {
+        console.error('Chyba při mazání objednávky:', error);
+        alert('Chyba při mazání objednávky: ' + error.message);
+      } else {
+        console.log('Objednávka smazána');
+        alert('Objednávka byla úspěšně smazána');
+        // Refresh orders to show updated list
+        refreshOrders();
+      }
+    } catch (err) {
+      console.error('Chyba:', err);
+      alert('Chyba při mazání objednávky: ' + err.message);
+    }
+  }
+
+  // Make deleteOrder globally available
+  window.deleteOrder = deleteOrder;
 
   // Migrace objednávek z Google Sheets
   async function migrateOrdersFromSheets() {
