@@ -408,9 +408,15 @@
               `;
             }
             
+            // Zkrácené číslo objednávky
+            const orderNumber = order.order_number || 'N/A';
+            const shortOrderNumber = orderNumber.length > 8 ? orderNumber.substring(0, 5) + '...' : orderNumber;
+            
             return `
               <tr style="border-bottom:1px solid #dee2e6; background-color: ${rowBgColor};">
-                <td style="padding:12px;font-weight:600">#${order.order_number || 'N/A'}</td>
+                <td style="padding:12px;font-weight:600">
+                  <span title="${orderNumber}" style="cursor: help; border-bottom: 1px dotted #666;">#${shortOrderNumber}</span>
+                </td>
                 <td style="padding:12px">
                   <div>${order.customer_name || 'N/A'}</div>
                   ${productsHtml}
