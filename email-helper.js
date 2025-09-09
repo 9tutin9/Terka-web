@@ -159,6 +159,10 @@ window.EmailHelper = {
                 .highlight p {
                   color: #000000 !important;
                 }
+                
+                .highlight strong {
+                  color: #000000 !important;
+                }
               }
           </style>
       </head>
@@ -327,6 +331,10 @@ window.EmailHelper = {
                 
                 .highlight h3,
                 .highlight p {
+                  color: #000000 !important;
+                }
+                
+                .highlight strong {
                   color: #000000 !important;
                 }
               }
