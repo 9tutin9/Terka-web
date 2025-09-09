@@ -30,9 +30,20 @@
   const orderSearch = document.getElementById('orderSearch');
   let allOrders = [];
 
+  // Products expand/collapse
+  const toggleProductsBtn = document.getElementById('toggleProductsBtn');
+  let productsExpanded = false;
+
   function requireSB(){
     if (!window.sb){ alert('Supabase není inicializováno. Nejprve nastavte SUPABASE_URL a SUPABASE_ANON_KEY v config.js.'); return false; }
     return true;
+  }
+
+  function toggleProducts() {
+    productsExpanded = !productsExpanded;
+    productsList.style.display = productsExpanded ? 'grid' : 'none';
+    toggleProductsBtn.textContent = productsExpanded ? 'Sbalit' : 'Rozbalit';
+    toggleProductsBtn.classList.toggle('expanded', productsExpanded);
   }
 
   function setAuthUI(user){
@@ -346,25 +357,52 @@
             <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">VS</th>
             <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Stav</th>
             <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">Datum</th>
+            <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Odesláno</th>
           </tr>
         </thead>
         <tbody>
           ${filteredOrders.map(order => {
             const isPaid = order.paid === true || order.paid === 'true';
+            const isShipped = order.shipped === true || order.shipped === 'true';
             const paidStyle = isPaid ? 'color:#10b981;font-weight:600' : 'color:#dc2626;font-weight:600';
             const paidText = isPaid ? 'Zaplaceno' : 'Nezaplaceno';
             const date = new Date(order.timestamp || order.created_at || 0);
             const dateStr = date.toLocaleDateString('cs-CZ') + ' ' + date.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
             
+            // Render products
+            let productsHtml = '';
+            if (order.items && Array.isArray(order.items)) {
+              productsHtml = `
+                <div class="order-products">
+                  ${order.items.map(item => `
+                    <div class="order-product">
+                      <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.name}" onerror="this.src='/images/placeholder.jpg'">
+                      <span>${item.name}</span>
+                      <span class="qty">${item.qty}x</span>
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+            }
+            
             return `
               <tr style="border-bottom:1px solid #dee2e6">
                 <td style="padding:12px;font-weight:600">#${order.order_number || 'N/A'}</td>
-                <td style="padding:12px">${order.customer_name || 'N/A'}</td>
+                <td style="padding:12px">
+                  <div>${order.customer_name || 'N/A'}</div>
+                  ${productsHtml}
+                </td>
                 <td style="padding:12px">${order.customer_email || 'N/A'}</td>
                 <td style="padding:12px;text-align:right;font-weight:600">${(order.amount || 0).toLocaleString('cs-CZ')} Kč</td>
                 <td style="padding:12px;text-align:center;font-family:monospace">${order.vs || 'N/A'}</td>
                 <td style="padding:12px;text-align:center"><span style="${paidStyle}">${paidText}</span></td>
                 <td style="padding:12px;color:#666">${dateStr}</td>
+                <td style="padding:12px;text-align:center">
+                  <div class="shipped-checkbox">
+                    <input type="checkbox" id="shipped_${order.id || order.order_number}" ${isShipped ? 'checked' : ''} onchange="updateShippedStatus('${order.id || order.order_number}', this.checked)">
+                    <label for="shipped_${order.id || order.order_number}">Odesláno</label>
+                  </div>
+                </td>
               </tr>
             `;
           }).join('')}
@@ -372,6 +410,33 @@
       </table>
     `;
   }
+
+  // Update shipped status
+  async function updateShippedStatus(orderId, shipped) {
+    if (!requireSB()) return;
+    
+    try {
+      const { error } = await window.sb
+        .from('orders')
+        .update({ shipped: shipped })
+        .eq('id', orderId);
+        
+      if (error) {
+        console.error('Chyba při aktualizaci:', error);
+        alert('Chyba při aktualizaci stavu odeslání');
+      } else {
+        console.log('Stav odeslání aktualizován');
+        // Refresh orders to show updated status
+        refreshOrders();
+      }
+    } catch (err) {
+      console.error('Chyba:', err);
+      alert('Chyba při aktualizaci stavu odeslání');
+    }
+  }
+
+  // Make updateShippedStatus globally available
+  window.updateShippedStatus = updateShippedStatus;
 
   // Migrace objednávek z Google Sheets
   async function migrateOrdersFromSheets() {
@@ -478,6 +543,10 @@
   
   if (migrateOrdersBtn) {
     migrateOrdersBtn.addEventListener('click', migrateOrdersFromSheets);
+  }
+
+  if (toggleProductsBtn) {
+    toggleProductsBtn.addEventListener('click', toggleProducts);
   }
   
   if (orderFilter) {

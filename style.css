@@ -1168,6 +1168,83 @@ body.cart-open {
   border-left: 4px solid #059669;
 }
 
+/* Admin expand/collapse */
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.1);
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.2);
+}
+
+.btn-outline.expanded {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+/* Order products display */
+.order-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.order-product {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.order-product img {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.order-product .qty {
+  background: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Shipped checkbox */
+.shipped-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.shipped-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.shipped-checkbox label {
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
 /* ===== CHECKOUT STRÁNKA ===== */
 .checkout-page {
   padding-top: 120px; /* Pro navigaci */
