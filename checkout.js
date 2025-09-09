@@ -135,8 +135,20 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(order)
       });
-      if (!res.ok) console.warn('Order proxy error:', await res.text());
-    }catch(e){ console.warn('Order proxy fetch error:', e); }
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Order API error:', res.status, errorText);
+        throw new Error(`Order API error: ${res.status} - ${errorText}`);
+      }
+      
+      const result = await res.json();
+      console.log('Order sent successfully:', result);
+      return result;
+    }catch(e){ 
+      console.error('Order proxy fetch error:', e);
+      throw e;
+    }
   }
 
   // Odečte sklad po úspěšné objednávce
@@ -251,7 +263,9 @@
       const submitBtn = document.querySelector('#orderForm button[type="submit"]');
       if (submitBtn) { submitBtn.textContent = 'Zpracovávám...'; submitBtn.disabled = true; submitBtn.dataset.lock = 'true'; }
 
-      await sendToSheet(orderData);
+      // Odešli objednávku
+      const orderResult = await sendToSheet(orderData);
+      console.log('Order result:', orderResult);
 
       // Odečteme sklad po úspěšném odeslání objednávky
       await updateStockAfterOrder(cartItems);
