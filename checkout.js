@@ -659,6 +659,9 @@
       }
       if (downloadBtn && qrDataUrl){ downloadBtn.href = qrDataUrl; downloadBtn.setAttribute('aria-disabled','false'); downloadBtn.download = `qr-platba-${orderNo}.png`; }
 
+      // Generuj QR kód přes API pro e-maily (lepší kompatibilita)
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(spd)}`;
+      
       const orderData = {
         order_number: orderNo,
         vs: vs,
@@ -673,7 +676,8 @@
         payment_message: paymentMessage,
         delivery_note: deliveryNote,
         note: deliveryNote,
-        qr_png: qrDataUrl,
+        qr_png: qrApiUrl, // Použij API URL místo DataURL
+        qr_dataurl: qrDataUrl, // Zachovej DataURL pro download
         qr_code: document.getElementById('qrCode')?.innerHTML || '',
         payment_info: { iban: cfg.IBAN || '', cz_account: cfg.CZ_ACCOUNT || '', recipient: cfg.RECIPIENT || 'Děti dětem', vs },
         ss: ss,
