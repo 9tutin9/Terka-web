@@ -85,11 +85,29 @@
           <h3>Produkty</h3>
           <div id="productsList" class="products-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px"></div>
         </div>
-
+        /api/order
+        Node.js 22.x
+        1,1 kB
+        iad1
+        
+        
+        /api/orders
+        Node.js 22.x
+        592,0 B
+        iad1
+        
+        
+        /api/stats
+        Node.js 22.x
+        611,0 B
+        iad
         <div class="glass-card" style="padding:16px;margin-top:16px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px">
             <h3>Objednávky</h3>
-            <button id="refreshOrders" class="btn-secondary" type="button">Obnovit</button>
+            <div style="display:flex;gap:8px">
+              <button id="migrateOrders" class="btn-secondary" type="button">Migrovat z Sheets</button>
+              <button id="refreshOrders" class="btn-secondary" type="button">Obnovit</button>
+            </div>
           </div>
           <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
             <select id="orderFilter" style="padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
