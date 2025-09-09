@@ -51,7 +51,14 @@
             <input name="name" placeholder="Název" required>
             <input type="hidden" name="price" value="69">
             <input name="stock" placeholder="Sklad (ks)" type="number" min="0" step="1">
-            <input name="diameter_mm" placeholder="Průměr (mm)" type="number" min="0" step="1">
+            <select name="size" required>
+              <option value="">Vyberte velikost</option>
+              <option value="XS">XS (extra malý) - 14-15 cm</option>
+              <option value="S">S (malý) - 15,5-16,5 cm</option>
+              <option value="M">M (střední) - 17-18 cm</option>
+              <option value="L">L (velký) - 18,5-19,5 cm</option>
+              <option value="XL">XL (extra velký) - 20-21 cm</option>
+            </select>
             <select name="category_slug" required>
               <option value="love">Náramek lásky</option>
               <option value="hope">Náramek naděje</option>
