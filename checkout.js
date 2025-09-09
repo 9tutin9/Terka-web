@@ -74,7 +74,10 @@
   // === QR ===
   async function drawQR(text){
       const qrContainer = document.getElementById('qrCode');
-    if (!qrContainer) return;
+    if (!qrContainer) {
+      console.error('QR Container not found');
+      return;
+    }
       qrContainer.innerHTML = '';
       const canvas = document.createElement('canvas');
       canvas.id = 'qrCanvas';
@@ -84,10 +87,22 @@
       canvas.style.display = 'block';
       canvas.style.margin = '0 auto';
       qrContainer.appendChild(canvas);
+      
+      console.log('QRCode available:', !!window.QRCode, 'Text:', text);
+      
       if (window.QRCode && window.QRCode.toCanvas) {
-      try { await QRCode.toCanvas(canvas, text, { width: 256, margin: 1 }); }
-      catch (qrError) { console.warn("QRCode fallback:", qrError); drawFallbackQR(canvas, text); }
-    } else { drawFallbackQR(canvas, text); }
+      try { 
+        await QRCode.toCanvas(canvas, text, { width: 256, margin: 1 });
+        console.log('QR Code generated successfully');
+      }
+      catch (qrError) { 
+        console.warn("QRCode fallback:", qrError); 
+        drawFallbackQR(canvas, text); 
+      }
+    } else { 
+      console.log('QRCode not available, using fallback');
+      drawFallbackQR(canvas, text); 
+    }
       const textDiv = document.createElement('div');
       textDiv.style.marginTop = '1rem';
       textDiv.style.fontFamily = 'monospace';

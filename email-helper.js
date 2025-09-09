@@ -46,7 +46,7 @@ window.EmailHelper = {
           <style>
               body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
               .header { text-align: center; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-              .logo { max-width: 200px; height: auto; }
+              .logo { max-width: 120px; height: auto; }
               .order-info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; }
               .items { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }
               .qr-section { text-align: center; margin: 20px 0; }
@@ -117,7 +117,7 @@ window.EmailHelper = {
           <style>
               body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
               .header { text-align: center; background: #dc3545; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-              .logo { max-width: 200px; height: auto; }
+              .logo { max-width: 120px; height: auto; }
               .order-info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; }
               .customer-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; }
               .items { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }
