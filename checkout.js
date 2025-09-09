@@ -269,7 +269,18 @@
 
       // Pokus o automatické přehrání (většina prohlížečů vyžaduje interakci; fallback zobrazí jen přehrávač)
       video.muted = true;
-      video.play().catch(()=>{ video.muted = false; });
+      video.play().then(() => {
+        // Pokud se video spustí, odtlumíme ho po 1 sekundě
+        setTimeout(() => {
+          video.muted = false;
+        }, 1000);
+      }).catch(() => { 
+        // Pokud se nepodaří spustit, zkusíme bez mutování
+        video.muted = false;
+        video.play().catch(() => {
+          console.log('Video se nepodařilo spustit automaticky');
+        });
+      });
     }
   }
 
