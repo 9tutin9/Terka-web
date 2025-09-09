@@ -169,7 +169,7 @@ window.EmailHelper = {
           to,
           subject,
           html,
-          from: 'Děti dětem <noreply@detidetem.eu>'
+          from: 'Děti dětem <noreply@resend.dev>'
         })
       });
 
