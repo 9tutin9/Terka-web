@@ -24,20 +24,23 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Return test data for now
+    // Try to read from Supabase
+    const { createClient } = require('@supabase/supabase-js');
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ ok: false, error: error.message });
+    }
+
     return res.status(200).json({
       ok: true,
-      orders: [
-        {
-          id: 1,
-          order_number: '#TEST001',
-          customer_name: 'Test User',
-          customer_email: 'test@example.com',
-          amount: 100,
-          paid: false,
-          created_at: new Date().toISOString()
-        }
-      ]
+      orders: orders || []
     });
 
   } catch (e) {
