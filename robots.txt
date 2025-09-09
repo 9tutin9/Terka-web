@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.detidetem.eu/sitemap.xml
+
+# Disallow admin area
+Disallow: /admin.html
+Disallow: /admin/
+
+# Allow all other pages
+Allow: /naramek-*
+Allow: /eshop.html
+Allow: /kontakt.html
+Allow: /onas.html
+Allow: /obchodni-podminky.html
+
+# Crawl delay (optional)
+Crawl-delay: 1

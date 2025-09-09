@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dodací štítek - {{ORDER_NUMBER}}</title>
+  <style>
+    @page {
+      size: 100mm 50mm;
+      margin: 2mm;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      margin: 0;
+      padding: 0;
+      width: 96mm;
+      height: 46mm;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    .label-header {
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      color: white;
+      padding: 3mm;
+      border-bottom: 2px solid #5f3dc4;
+      font-weight: bold;
+      text-align: center;
+      font-size: 12px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .logo-section {
+      position: absolute;
+      top: 2mm;
+      right: 2mm;
+      width: 20mm;
+      height: 20mm;
+      background: white;
+      border: 2px solid #6c5ce7;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .logo-section img {
+      width: 16mm;
+      height: 16mm;
+      object-fit: contain;
+    }
+    
+    .logo-text {
+      font-size: 6px;
+      font-weight: bold;
+      color: #6c5ce7;
+      margin-top: 1mm;
+    }
+    
+    .address {
+      padding: 3mm;
+      line-height: 1.3;
+      margin-right: 22mm;
+    }
+    
+    .customer-name {
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 1mm;
+      color: #2d3436;
+    }
+    
+    .address-line {
+      margin-bottom: 0.5mm;
+      color: #636e72;
+    }
+    
+    .city-zip {
+      font-weight: bold;
+      color: #2d3436;
+      font-size: 11px;
+    }
+    
+    .order-info {
+      position: absolute;
+      bottom: 2mm;
+      right: 2mm;
+      font-size: 8px;
+      color: #636e72;
+      background: rgba(255,255,255,0.8);
+      padding: 2mm;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    
+    /* CUSTOMIZACE - ZMĚŇ TYTO HODNOTY */
+    
+    /* Velikost štítku */
+    .custom-size {
+      /* @page size: 100mm 50mm; - změň v @page výše */
+    }
+    
+    /* Barvy */
+    .custom-colors {
+      /* Hlavní barva: #6c5ce7 */
+      /* Sekundární barva: #a29bfe */
+      /* Pozadí: #f8f9fa */
+    }
+    
+    /* Pozice loga */
+    .custom-logo-position {
+      /* top: 2mm; right: 2mm; - změň v .logo-section */
+    }
+    
+    /* Velikost loga */
+    .custom-logo-size {
+      /* width: 20mm; height: 20mm; - změň v .logo-section */
+    }
+    
+    /* Fonty */
+    .custom-fonts {
+      /* font-family: Arial, sans-serif; - změň v body */
+    }
+  </style>
+</head>
+<body>
+  <div class="label-header">
+    DODACÍ ŠTÍTEK - {{ORDER_NUMBER}}
+  </div>
+  
+  <div class="logo-section">
+    <img src="images/detidetem.logo.webp" alt="Děti dětem">
+    <div class="logo-text">Děti dětem</div>
+  </div>
+  
+  <div class="address">
+    <div class="customer-name">{{CUSTOMER_NAME}}</div>
+    <div class="address-line">{{ADDRESS_LINE}}</div>
+    <div class="city-zip">{{ZIP_CODE}} {{CITY}}</div>
+  </div>
+  
+  <div class="order-info">
+    VS: {{VARIABLE_SYMBOL}}
+  </div>
+</body>
+</html>
