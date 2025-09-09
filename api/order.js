@@ -9,24 +9,29 @@ module.exports = async (req, res) => {
     // 1. Odeslat do Google Sheets (stávající funkcionalita)
     const url = process.env.SHEET_WEBHOOK_URL;
     const token = process.env.SHEET_TOKEN;
-    if (!url || !token) {
-      return res.status(500).json({ ok: false, error: 'Missing server config' });
-    }
     
-    const withToken = url + (url.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(token);
-    const sheetResponse = await fetch(withToken, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(req.body),
-    });
-    
-    if (!sheetResponse.ok) {
-      const errorText = await sheetResponse.text();
-      console.error('Google Sheets error:', sheetResponse.status, errorText);
-      return res.status(500).json({ 
-        ok: false, 
-        error: 'Google Sheets error: ' + sheetResponse.status + ' - ' + errorText 
-      });
+    if (url && token) {
+      try {
+        const withToken = url + (url.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(token);
+        const sheetResponse = await fetch(withToken, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(req.body),
+        });
+        
+        if (!sheetResponse.ok) {
+          const errorText = await sheetResponse.text();
+          console.error('Google Sheets error:', sheetResponse.status, errorText);
+          // Necháme to projít, i když Google Sheets selže
+        } else {
+          console.log('Google Sheets updated successfully');
+        }
+      } catch (sheetError) {
+        console.error('Google Sheets error:', sheetError);
+        // Necháme to projít, i když Google Sheets selže
+      }
+    } else {
+      console.log('Google Sheets not configured, skipping...');
     }
     
     // 2. Zapsat do Supabase (nová funkcionalita)
@@ -71,8 +76,7 @@ module.exports = async (req, res) => {
       // Necháme to projít, i když Supabase selže
     }
     
-    const text = await sheetResponse.text();
-    return res.status(200).json({ ok: true, resp: text });
+    return res.status(200).json({ ok: true, message: 'Order processed successfully' });
     
   } catch (e) {
     return res.status(500).json({ ok: false, error: String(e) });
