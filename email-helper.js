@@ -7,6 +7,11 @@ window.EmailHelper = {
     
     return items.map(item => `
       <div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+        <div style="margin-right: 15px;">
+          <img src="${item.image || 'https://www.detidetem.eu/images/detidetem.logo.webp'}" 
+               alt="${item.name || 'Náramek'}" 
+               style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+        </div>
         <div style="flex: 1;">
           <strong>${item.name || 'Náramek'}</strong>
           ${item.size ? `<br><small>Velikost: ${item.size}</small>` : ''}
@@ -147,6 +152,16 @@ window.EmailHelper = {
               <h3>🛍️ Objednané položky</h3>
               ${itemsHTML}
           </div>
+
+          ${data.qr_png ? `
+          <div class="qr-section" style="text-align: center; margin: 20px 0; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+              <h3>💳 QR platba</h3>
+              <p>QR kód pro platbu:</p>
+              <img src="${data.qr_png}" alt="QR kód pro platbu" style="max-width: 200px; height: auto;">
+              <p><strong>Variabilní symbol:</strong> ${data.vs}</p>
+              <p><strong>Částka:</strong> ${data.amount} Kč</p>
+          </div>
+          ` : ''}
 
           <div class="footer">
               <p>Děti dětem - Admin panel</p>
