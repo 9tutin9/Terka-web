@@ -21,7 +21,12 @@ module.exports = async (req, res) => {
     });
     
     if (!sheetResponse.ok) {
-      return res.status(500).json({ ok: false, error: 'Google Sheets error' });
+      const errorText = await sheetResponse.text();
+      console.error('Google Sheets error:', sheetResponse.status, errorText);
+      return res.status(500).json({ 
+        ok: false, 
+        error: 'Google Sheets error: ' + sheetResponse.status + ' - ' + errorText 
+      });
     }
     
     // 2. Zapsat do Supabase (nová funkcionalita)
