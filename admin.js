@@ -585,11 +585,21 @@
 
   // Print shipping label
   function printShippingLabel(orderId) {
-    const order = allOrders.find(o => (o.id || o.order_number) === orderId);
+    console.log('Hledám objednávku s ID:', orderId);
+    
+    // Hledej podle id nebo order_number (oba jako stringy)
+    const order = allOrders.find(o => {
+      const oId = String(o.id || o.order_number);
+      const searchId = String(orderId);
+      return oId === searchId;
+    });
+    
     if (!order) {
-      alert('Objednávka nenalezena');
+      alert(`Objednávka nenalezena. Hledané ID: ${orderId}`);
       return;
     }
+    
+    console.log('Nalezená objednávka:', order);
 
     // Check if order has address
     if (!order.address_line && !order.address_city && !order.address_zip) {
