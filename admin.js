@@ -648,11 +648,13 @@
             padding: 4mm;
             border-bottom: 3px solid #000;
             font-weight: 700;
-            text-align: center;
+            text-align: left;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
             position: relative;
             letter-spacing: 0.5px;
+            padding-left: 2mm;
+            padding-right: 20mm;
           }
           .logo-section {
             position: absolute;
@@ -690,13 +692,8 @@
             line-height: 1.3;
             text-align: center;
             margin-top: 2mm;
-            background: rgba(248, 250, 252, 0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border-radius: 6px;
             margin-left: 4mm;
             margin-right: 4mm;
-            border: 1px solid rgba(0,0,0,0.1);
           }
           .customer-name {
             font-weight: 700;
