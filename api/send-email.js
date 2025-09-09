@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { to, subject, html, from = 'Děti dětem <noreply@resend.dev>' } = req.body;
+    const { to, subject, html, from = 'Děti dětem <noreply@detidetem.eu>' } = req.body;
 
     // Validate required fields
     if (!to || !subject || !html) {
