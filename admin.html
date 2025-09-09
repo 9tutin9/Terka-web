@@ -143,6 +143,17 @@
     </div>
   </div>
 
+  <!-- Order Address Modal -->
+  <div id="orderAddressModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:4000;align-items:center;justify-content:center">
+    <div class="glass-card" style="width:min(92vw,500px);max-height:90vh;overflow:auto;border-radius:16px;padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px">
+        <strong>Doručovací adresa</strong>
+        <button id="oaClose" class="btn-secondary" type="button">Zavřít</button>
+      </div>
+      <div id="orderAddressContent"></div>
+    </div>
+  </div>
+
   <script src="config.js"></script>
   <script src="supabase.js"></script>
   <script src="admin.js"></script>

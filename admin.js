@@ -381,6 +381,18 @@
                 </div>
               `;
             }
+
+            // Render address button
+            let addressHtml = '';
+            if (order.address_line || order.address_city || order.address_zip) {
+              addressHtml = `
+                <div style="margin-top: 8px;">
+                  <button class="btn btn-outline" onclick="showOrderAddress('${order.id || order.order_number}')" style="font-size: 12px; padding: 4px 8px;">
+                    📍 Adresa
+                  </button>
+                </div>
+              `;
+            }
             
             return `
               <tr style="border-bottom:1px solid #dee2e6">
@@ -388,6 +400,7 @@
                 <td style="padding:12px">
                   <div>${order.customer_name || 'N/A'}</div>
                   ${productsHtml}
+                  ${addressHtml}
                 </td>
                 <td style="padding:12px">${order.customer_email || 'N/A'}</td>
                 <td style="padding:12px;text-align:right;font-weight:600">${(order.amount || 0).toLocaleString('cs-CZ')} Kč</td>
@@ -474,6 +487,48 @@
 
   // Make showOrderProducts globally available
   window.showOrderProducts = showOrderProducts;
+
+  // Show order address modal
+  function showOrderAddress(orderId) {
+    const order = allOrders.find(o => (o.id || o.order_number) == orderId);
+    if (!order) return;
+
+    const modal = document.getElementById('orderAddressModal');
+    const content = document.getElementById('orderAddressContent');
+    
+    const addressParts = [];
+    if (order.address_line) addressParts.push(order.address_line);
+    if (order.address_city) addressParts.push(order.address_city);
+    if (order.address_zip) addressParts.push(order.address_zip);
+    
+    const fullAddress = addressParts.join(', ');
+    
+    content.innerHTML = `
+      <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+        <h4 style="margin: 0 0 12px 0; color: #374151;">Zákazník</h4>
+        <div style="margin-bottom: 8px;"><strong>Jméno:</strong> ${order.customer_name || 'N/A'}</div>
+        <div style="margin-bottom: 8px;"><strong>E-mail:</strong> ${order.customer_email || 'N/A'}</div>
+        ${order.customer_phone ? `<div style="margin-bottom: 8px;"><strong>Telefon:</strong> ${order.customer_phone}</div>` : ''}
+      </div>
+      
+      <div style="background: #f0f9ff; padding: 16px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+        <h4 style="margin: 0 0 12px 0; color: #374151;">Doručovací adresa</h4>
+        ${fullAddress ? `<div style="font-size: 16px; line-height: 1.5;">${fullAddress}</div>` : '<div style="color: #6b7280; font-style: italic;">Adresa není k dispozici</div>'}
+      </div>
+      
+      ${order.delivery_note ? `
+        <div style="background: #fef3c7; padding: 16px; border-radius: 8px; margin-top: 16px; border-left: 4px solid #f59e0b;">
+          <h4 style="margin: 0 0 8px 0; color: #374151;">Poznámka k doručení</h4>
+          <div style="font-style: italic;">${order.delivery_note}</div>
+        </div>
+      ` : ''}
+    `;
+
+    modal.style.display = 'flex';
+  }
+
+  // Make showOrderAddress globally available
+  window.showOrderAddress = showOrderAddress;
 
   // Migrace objednávek z Google Sheets
   async function migrateOrdersFromSheets() {
@@ -600,6 +655,24 @@
     orderProductsModal.addEventListener('click', (e) => {
       if (e.target === orderProductsModal) {
         orderProductsModal.style.display = 'none';
+      }
+    });
+  }
+
+  // Order address modal
+  const orderAddressModal = document.getElementById('orderAddressModal');
+  const oaClose = document.getElementById('oaClose');
+  
+  if (oaClose) {
+    oaClose.addEventListener('click', () => {
+      orderAddressModal.style.display = 'none';
+    });
+  }
+  
+  if (orderAddressModal) {
+    orderAddressModal.addEventListener('click', (e) => {
+      if (e.target === orderAddressModal) {
+        orderAddressModal.style.display = 'none';
       }
     });
   }
