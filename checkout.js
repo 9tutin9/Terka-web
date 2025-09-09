@@ -103,6 +103,24 @@
       console.log('QRCode not available, using fallback');
       drawFallbackQR(canvas, text); 
     }
+    
+    // Zkusme také generovat QR kód přes API jako fallback
+    try {
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(text)}`;
+      const qrImg = document.createElement('img');
+      qrImg.src = qrApiUrl;
+      qrImg.style.display = 'none';
+      qrImg.onload = () => {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, 256, 256);
+          ctx.drawImage(qrImg, 0, 0, 256, 256);
+          console.log('QR Code generated via API fallback');
+        }
+      };
+    } catch (apiError) {
+      console.warn('QR API fallback failed:', apiError);
+    }
       const textDiv = document.createElement('div');
       textDiv.style.marginTop = '1rem';
       textDiv.style.fontFamily = 'monospace';
