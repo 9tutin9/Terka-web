@@ -369,18 +369,15 @@
             const date = new Date(order.timestamp || order.created_at || 0);
             const dateStr = date.toLocaleDateString('cs-CZ') + ' ' + date.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
             
-            // Render products
+            // Render products button
             let productsHtml = '';
             if (order.items && Array.isArray(order.items)) {
+              const totalItems = order.items.reduce((sum, item) => sum + (item.qty || 0), 0);
               productsHtml = `
-                <div class="order-products">
-                  ${order.items.map(item => `
-                    <div class="order-product">
-                      <img src="${item.image || 'images/detidetem.logo.webp'}" alt="${item.name}" onerror="this.src='images/detidetem.logo.webp'">
-                      <span>${item.name}</span>
-                      <span class="qty">${item.qty}x</span>
-                    </div>
-                  `).join('')}
+                <div style="margin-top: 8px;">
+                  <button class="btn btn-outline" onclick="showOrderProducts('${order.id || order.order_number}')" style="font-size: 12px; padding: 4px 8px;">
+                    📦 ${totalItems} položek
+                  </button>
                 </div>
               `;
             }
@@ -437,6 +434,35 @@
 
   // Make updateShippedStatus globally available
   window.updateShippedStatus = updateShippedStatus;
+
+  // Show order products modal
+  function showOrderProducts(orderId) {
+    const order = allOrders.find(o => (o.id || o.order_number) == orderId);
+    if (!order || !order.items) return;
+
+    const modal = document.getElementById('orderProductsModal');
+    const list = document.getElementById('orderProductsList');
+    
+    list.innerHTML = order.items.map(item => `
+      <div class="glass-card" style="padding: 16px; text-align: center;">
+        <img src="${item.image || 'images/detidetem.logo.webp'}" 
+             alt="${item.name}" 
+             style="width: 120px; height: 120px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;"
+             onerror="this.src='images/detidetem.logo.webp'">
+        <h4 style="margin: 8px 0; font-size: 16px;">${item.name}</h4>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+          <span style="font-weight: 600; color: #3b82f6;">${item.qty}x</span>
+          <span style="font-weight: 600; color: #10b981;">${(item.price || 69).toLocaleString('cs-CZ')} Kč</span>
+        </div>
+        ${item.diameter_mm ? `<div style="margin-top: 8px; color: #666; font-size: 14px;">Průměr: ${item.diameter_mm}mm</div>` : ''}
+      </div>
+    `).join('');
+
+    modal.style.display = 'flex';
+  }
+
+  // Make showOrderProducts globally available
+  window.showOrderProducts = showOrderProducts;
 
   // Migrace objednávek z Google Sheets
   async function migrateOrdersFromSheets() {
@@ -547,6 +573,24 @@
 
   if (toggleProductsBtn) {
     toggleProductsBtn.addEventListener('click', toggleProducts);
+  }
+
+  // Order products modal
+  const orderProductsModal = document.getElementById('orderProductsModal');
+  const opClose = document.getElementById('opClose');
+  
+  if (opClose) {
+    opClose.addEventListener('click', () => {
+      orderProductsModal.style.display = 'none';
+    });
+  }
+  
+  if (orderProductsModal) {
+    orderProductsModal.addEventListener('click', (e) => {
+      if (e.target === orderProductsModal) {
+        orderProductsModal.style.display = 'none';
+      }
+    });
   }
   
   if (orderFilter) {
