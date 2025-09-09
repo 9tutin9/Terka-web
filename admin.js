@@ -651,7 +651,6 @@
             text-align: center;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             position: relative;
             letter-spacing: 0.5px;
           }
@@ -687,16 +686,16 @@
             letter-spacing: 0.3px;
           }
           .address {
-            padding: 4mm;
-            line-height: 1.4;
+            padding: 2mm;
+            line-height: 1.3;
             text-align: center;
-            margin-top: 3mm;
+            margin-top: 2mm;
             background: rgba(248, 250, 252, 0.8);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            border-radius: 8px;
-            margin-left: 2mm;
-            margin-right: 2mm;
+            border-radius: 6px;
+            margin-left: 4mm;
+            margin-right: 4mm;
             border: 1px solid rgba(0,0,0,0.1);
           }
           .customer-name {
@@ -722,22 +721,22 @@
           }
           .order-info {
             position: absolute;
-            bottom: 3mm;
+            bottom: 2mm;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 9px;
+            font-size: 7px;
             color: #000;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 3mm;
-            border-radius: 8px;
-            border: 2px solid #000;
+            padding: 2mm;
+            border-radius: 6px;
+            border: 1px solid #000;
             text-align: center;
-            font-weight: 700;
+            font-weight: 600;
             font-family: 'Poppins', sans-serif;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            letter-spacing: 0.3px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+            letter-spacing: 0.2px;
           }
         </style>
       </head>
