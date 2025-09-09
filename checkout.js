@@ -139,6 +139,31 @@
     }catch(e){ console.warn('Order proxy fetch error:', e); }
   }
 
+  // Odečte sklad po úspěšné objednávce
+  async function updateStockAfterOrder(cartItems) {
+    if (!window.sb || !cartItems || !cartItems.length) return;
+    
+    try {
+      // Pro každou položku v košíku odečteme sklad
+      for (const item of cartItems) {
+        if (item.id && item.qty) {
+          const { error } = await window.sb
+            .from('products')
+            .update({ 
+              stock: window.sb.raw(`stock - ${Number(item.qty)}`)
+            })
+            .eq('id', item.id);
+          
+          if (error) {
+            console.error('Chyba při aktualizaci skladu pro produkt', item.name, error);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Chyba při odečítání skladu:', error);
+    }
+  }
+
   function showToast(message, type = 'info') {
     const existingToast = document.querySelector('.toast'); if (existingToast) existingToast.remove();
     const toast = document.createElement('div'); toast.className = `toast toast-${type}`; toast.textContent = message; document.body.appendChild(toast);
@@ -227,6 +252,9 @@
       if (submitBtn) { submitBtn.textContent = 'Zpracovávám...'; submitBtn.disabled = true; submitBtn.dataset.lock = 'true'; }
 
       await sendToSheet(orderData);
+
+      // Odečteme sklad po úspěšném odeslání objednávky
+      await updateStockAfterOrder(cartItems);
 
       // Připrav HTML položek a dopad (impact)
       const itemsHTML = renderItemsHTML(orderData.items || []);

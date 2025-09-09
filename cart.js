@@ -10,14 +10,32 @@
     const items = load();
     const i = items.findIndex(x=>x.id===item.id);
     const maxStock = Number(item.stock||Infinity);
+    
+    // Kontrola vyprodání
+    if (maxStock <= 0) {
+      toast(`❌ ${item.name} je vyprodáno!`, 'error');
+      return;
+    }
+    
     if (i>=0){
       const nextQty = items[i].qty + qty;
-      items[i].qty = Math.min(nextQty, maxStock);
+      if (nextQty > maxStock) {
+        items[i].qty = maxStock;
+        toast(`⚠️ Přidáno pouze ${maxStock} ks (max. skladem)`, 'warning');
+      } else {
+        items[i].qty = nextQty;
+        toast(`✅ Přidáno do košíku: ${item.name}`);
+      }
     } else {
-      items.push({ ...item, qty: Math.min(qty, maxStock) });
+      if (qty > maxStock) {
+        items.push({ ...item, qty: maxStock });
+        toast(`⚠️ Přidáno pouze ${maxStock} ks (max. skladem)`, 'warning');
+      } else {
+        items.push({ ...item, qty: Math.min(qty, maxStock) });
+        toast(`✅ Přidáno do košíku: ${item.name}`);
+      }
     }
     save(items);
-    toast(`Přidáno do košíku: ${item.name}`);
   }
   function setQty(id, qty){
     const items = load().map(x=>{
@@ -163,13 +181,13 @@
   }
 
   // Toast
-  function toast(text){
+  function toast(text, type = 'info'){
     let el = document.createElement('div');
-    el.className = 'toast';
+    el.className = `toast toast-${type}`;
     el.textContent = text;
     document.body.appendChild(el);
     setTimeout(()=> el.classList.add('show'), 10);
-    setTimeout(()=> { el.classList.remove('show'); el.addEventListener('transitionend', ()=>el.remove(), {once:true}); }, 2500);
+    setTimeout(()=> { el.classList.remove('show'); el.addEventListener('transitionend', ()=>el.remove(), {once:true}); }, 3000);
   }
 
   // Delegace pro tlačítka [data-add-to-cart]

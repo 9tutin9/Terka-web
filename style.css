@@ -1150,6 +1150,24 @@ body.cart-open {
   transform: translate(-50%, 0);
 }
 
+.toast-error {
+  background: #dc2626;
+  color: white;
+  border-left: 4px solid #b91c1c;
+}
+
+.toast-warning {
+  background: #f59e0b;
+  color: white;
+  border-left: 4px solid #d97706;
+}
+
+.toast-success {
+  background: #10b981;
+  color: white;
+  border-left: 4px solid #059669;
+}
+
 /* ===== CHECKOUT STRÁNKA ===== */
 .checkout-page {
   padding-top: 120px; /* Pro navigaci */

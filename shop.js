@@ -21,10 +21,14 @@
       const qtyId = `qty-${id}`;
       const stock = Number(p.stock||0);
       const soldOut = stock <= 0;
+      const cardStyle = soldOut ? 'border:2px solid #dc2626;background:#fef2f2;opacity:0.8' : '';
+      const stockStyle = soldOut ? 'color:#dc2626;font-weight:600;background:#fee2e2;padding:2px 6px;border-radius:4px' : '';
       return `
-        <div class="product-card glass-card">
+        <div class="product-card glass-card" style="${cardStyle}">
           ${img}
-          <div class="muted" style="margin:4px 0 -4px 0;font-size:0.9rem">Sklad: ${Math.max(0, stock)} ks${(typeof p.diameter_mm === 'number' && isFinite(p.diameter_mm)) ? ` · ⌀ ${p.diameter_mm} mm` : ''}</div>
+          <div class="muted" style="margin:4px 0 -4px 0;font-size:0.9rem">
+            <span style="${stockStyle}">Sklad: ${Math.max(0, stock)} ks</span>${(typeof p.diameter_mm === 'number' && isFinite(p.diameter_mm)) ? ` · ⌀ ${p.diameter_mm} mm` : ''}
+          </div>
           <div style="display:flex;gap:12px;align-items:center;margin-top:16px">
             <input id="${qtyId}" type="number" min="1" ${soldOut ? 'disabled' : `max="${Math.max(0, stock)}"`} value="1" style="width:80px;padding:8px;border:1px solid rgba(0,0,0,0.1);border-radius:8px">
             <button class="btn-primary" ${soldOut ? 'disabled aria-disabled="true"' : ''} data-add-to-cart data-id="${id}" data-name="${(p.name||'').replace(/"/g,'&quot;')}" data-price="${Number(p.price)||69}" data-image="${p.image_url||''}" data-stock="${Math.max(0, stock)}" data-qty-selector="#${qtyId}">${soldOut ? 'Vyprodáno' : `3 jídla = ${Number(p.price||69).toLocaleString('cs-CZ')} Kč`}</button>

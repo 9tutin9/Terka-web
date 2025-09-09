@@ -22,6 +22,13 @@
   let spPage = 0;
   const spPageSize = 24;
 
+  // Orders elements
+  const ordersList = document.getElementById('ordersList');
+  const refreshOrdersBtn = document.getElementById('refreshOrders');
+  const orderFilter = document.getElementById('orderFilter');
+  const orderSearch = document.getElementById('orderSearch');
+  let allOrders = [];
+
   function requireSB(){
     if (!window.sb){ alert('Supabase není inicializováno. Nejprve nastavte SUPABASE_URL a SUPABASE_ANON_KEY v config.js.'); return false; }
     return true;
@@ -45,7 +52,10 @@
     if (!requireSB()) return;
     const { data } = await sb.auth.getSession();
     setAuthUI(data?.session?.user || null);
-    if (data?.session?.user){ await refreshProducts(); }
+    if (data?.session?.user){ 
+      await refreshProducts(); 
+      await refreshOrders();
+    }
   }
 
   if (loginForm){
@@ -79,22 +89,45 @@
       .select('id,name,price,stock,diameter_mm,image_url,category:categories(slug,name)')
       .order('created_at', { ascending: false });
     if (error){ productsList.innerHTML = `<div class="muted">Chyba: ${error.message}</div>`; return; }
-    productsList.innerHTML = (data||[]).map(p=>`
-      <div class="product-card glass-card" data-id="${p.id}">
+    
+    // Kontrola nízkého skladu
+    checkLowStock(data || []);
+    
+    productsList.innerHTML = (data||[]).map(p=>{
+      const stock = Number(p.stock||0);
+      const isLowStock = stock <= 0;
+      const stockStyle = isLowStock ? 'color:#dc2626;font-weight:600;background:#fee2e2;padding:2px 6px;border-radius:4px' : '';
+      return `
+      <div class="product-card glass-card" data-id="${p.id}" style="${isLowStock ? 'border:2px solid #dc2626;background:#fef2f2' : ''}">
         ${p.image_url ? `<img src="${p.image_url}" alt="" loading="lazy" style="width:100%;height:140px;object-fit:cover;border-radius:12px">` : ''}
         <div style="padding:8px 0">
           <div style="font-weight:600">${p.name||''}</div>
-          <div class="muted">${(p.category?.name)||''} · ${(Number(p.price)||0).toLocaleString('cs-CZ')} Kč · Sklad: ${Number(p.stock||0)}${typeof p.diameter_mm==='number' ? ` · ⌀ ${p.diameter_mm} mm` : ''}</div>
+          <div class="muted">${(p.category?.name)||''} · ${(Number(p.price)||0).toLocaleString('cs-CZ')} Kč · <span style="${stockStyle}">Sklad: ${stock} ks</span>${typeof p.diameter_mm==='number' ? ` · ⌀ ${p.diameter_mm} mm` : ''}</div>
         </div>
         <div style="display:flex;gap:8px">
           <button class="btn-secondary" data-edit="${p.id}">Upravit</button>
           <button class="btn-secondary" data-delete="${p.id}">Smazat</button>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
 
     productsList.querySelectorAll('[data-edit]').forEach(btn=> btn.addEventListener('click',()=> editProduct(btn.dataset.edit)));
     productsList.querySelectorAll('[data-delete]').forEach(btn=> btn.addEventListener('click',()=> deleteProduct(btn.dataset.delete)));
+  }
+
+  function checkLowStock(products) {
+    const lowStockProducts = products.filter(p => Number(p.stock || 0) <= 0);
+    const alertEl = document.getElementById('lowStockAlert');
+    const messageEl = document.getElementById('lowStockMessage');
+    
+    if (lowStockProducts.length > 0) {
+      alertEl.style.display = '';
+      const productNames = lowStockProducts.map(p => p.name).join(', ');
+      messageEl.textContent = `Vyprodáno: ${productNames}`;
+    } else {
+      alertEl.style.display = 'none';
+    }
   }
 
   async function editProduct(id){
@@ -246,6 +279,111 @@
   if (spPrev){ spPrev.addEventListener('click', ()=>{ spPage=Math.max(0, spPage-1); loadPicker(); }); }
   if (spNext){ spNext.addEventListener('click', ()=>{ spPage=spPage+1; loadPicker(); }); }
   if (spSearch){ spSearch.addEventListener('input', ()=>{ spPage=0; loadPicker(); }); }
+
+  // === Orders Management ===
+  async function refreshOrders(){
+    if (!ordersList) return;
+    ordersList.innerHTML = '<div class="muted">Načítám objednávky...</div>';
+    
+    try {
+      const response = await fetch('/api/orders');
+      const data = await response.json();
+      
+      if (!data.ok) {
+        ordersList.innerHTML = `<div class="muted">Chyba: ${data.error}</div>`;
+        return;
+      }
+      
+      allOrders = data.orders || [];
+      renderOrders();
+    } catch (error) {
+      ordersList.innerHTML = `<div class="muted">Chyba načítání: ${error.message}</div>`;
+    }
+  }
+
+  function renderOrders(){
+    if (!ordersList) return;
+    
+    const filter = orderFilter?.value || 'all';
+    const search = orderSearch?.value?.toLowerCase() || '';
+    
+    let filteredOrders = allOrders;
+    
+    // Filter by status
+    if (filter === 'paid') {
+      filteredOrders = allOrders.filter(o => o.paid === true || o.paid === 'true');
+    } else if (filter === 'unpaid') {
+      filteredOrders = allOrders.filter(o => !o.paid || o.paid === false || o.paid === 'false');
+    }
+    
+    // Search filter
+    if (search) {
+      filteredOrders = filteredOrders.filter(o => 
+        (o.order_number && o.order_number.toLowerCase().includes(search)) ||
+        (o.customer_name && o.customer_name.toLowerCase().includes(search)) ||
+        (o.customer_email && o.customer_email.toLowerCase().includes(search)) ||
+        (o.vs && o.vs.toString().includes(search))
+      );
+    }
+    
+    if (!filteredOrders.length) {
+      ordersList.innerHTML = '<div class="muted">Žádné objednávky nenalezeny</div>';
+      return;
+    }
+    
+    // Sort by date (newest first)
+    filteredOrders.sort((a, b) => new Date(b.timestamp || b.created_at || 0) - new Date(a.timestamp || a.created_at || 0));
+    
+    ordersList.innerHTML = `
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead>
+          <tr style="background:#f8f9fa;border-bottom:2px solid #dee2e6">
+            <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">Číslo</th>
+            <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">Zákazník</th>
+            <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">E-mail</th>
+            <th style="padding:12px;text-align:right;border-bottom:1px solid #dee2e6">Částka</th>
+            <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">VS</th>
+            <th style="padding:12px;text-align:center;border-bottom:1px solid #dee2e6">Stav</th>
+            <th style="padding:12px;text-align:left;border-bottom:1px solid #dee2e6">Datum</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filteredOrders.map(order => {
+            const isPaid = order.paid === true || order.paid === 'true';
+            const paidStyle = isPaid ? 'color:#10b981;font-weight:600' : 'color:#dc2626;font-weight:600';
+            const paidText = isPaid ? 'Zaplaceno' : 'Nezaplaceno';
+            const date = new Date(order.timestamp || order.created_at || 0);
+            const dateStr = date.toLocaleDateString('cs-CZ') + ' ' + date.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
+            
+            return `
+              <tr style="border-bottom:1px solid #dee2e6">
+                <td style="padding:12px;font-weight:600">#${order.order_number || 'N/A'}</td>
+                <td style="padding:12px">${order.customer_name || 'N/A'}</td>
+                <td style="padding:12px">${order.customer_email || 'N/A'}</td>
+                <td style="padding:12px;text-align:right;font-weight:600">${(order.amount || 0).toLocaleString('cs-CZ')} Kč</td>
+                <td style="padding:12px;text-align:center;font-family:monospace">${order.vs || 'N/A'}</td>
+                <td style="padding:12px;text-align:center"><span style="${paidStyle}">${paidText}</span></td>
+                <td style="padding:12px;color:#666">${dateStr}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  // Event listeners for orders
+  if (refreshOrdersBtn) {
+    refreshOrdersBtn.addEventListener('click', refreshOrders);
+  }
+  
+  if (orderFilter) {
+    orderFilter.addEventListener('change', renderOrders);
+  }
+  
+  if (orderSearch) {
+    orderSearch.addEventListener('input', renderOrders);
+  }
 })();
 
 
