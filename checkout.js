@@ -608,6 +608,7 @@
       if (orderNoEl) orderNoEl.textContent = orderNo;
       const canvas = document.getElementById('qrCanvas');
       const qrDataUrl = canvas ? canvasToDataURL(canvas) : '';
+      console.log('QR Canvas:', canvas, 'QR DataURL:', qrDataUrl ? 'Generated' : 'Empty');
       if (downloadBtn && qrDataUrl){ downloadBtn.href = qrDataUrl; downloadBtn.setAttribute('aria-disabled','false'); downloadBtn.download = `qr-platba-${orderNo}.png`; }
 
       const orderData = {

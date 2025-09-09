@@ -8,7 +8,7 @@ window.EmailHelper = {
     return items.map(item => `
       <div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
         <div style="margin-right: 15px;">
-          <img src="${item.image || 'https://www.detidetem.eu/images/detidetem.logo.webp'}" 
+          <img src="${item.image && item.image.trim() ? item.image : 'https://www.detidetem.eu/images/detidetem.logo.webp'}" 
                alt="${item.name || 'Náramek'}" 
                style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
         </div>
@@ -77,7 +77,7 @@ window.EmailHelper = {
           <div class="qr-section">
               <h3>💳 QR platba</h3>
               <p>Naskenujte QR kód mobilní aplikací vaší banky:</p>
-              <img src="${data.qr_png}" alt="QR kód pro platbu" class="qr-code">
+              ${data.qr_png ? `<img src="${data.qr_png}" alt="QR kód pro platbu" class="qr-code">` : '<p style="color: #666; font-style: italic;">QR kód se generuje...</p>'}
               <p><strong>Variabilní symbol:</strong> ${data.vs}</p>
               <p><strong>Částka:</strong> ${data.amount} Kč</p>
           </div>
