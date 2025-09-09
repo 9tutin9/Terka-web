@@ -263,12 +263,24 @@
       const submitBtn = document.querySelector('#orderForm button[type="submit"]');
       if (submitBtn) { submitBtn.textContent = 'Zpracovávám...'; submitBtn.disabled = true; submitBtn.dataset.lock = 'true'; }
 
+      console.log('Sending order:', orderData);
+
       // Odešli objednávku
-      const orderResult = await sendToSheet(orderData);
-      console.log('Order result:', orderResult);
+      try {
+        const orderResult = await sendToSheet(orderData);
+        console.log('Order result:', orderResult);
+      } catch (orderError) {
+        console.error('Order failed, but continuing with emails:', orderError);
+        // Pokračujeme i když objednávka selže
+      }
 
       // Odečteme sklad po úspěšném odeslání objednávky
-      await updateStockAfterOrder(cartItems);
+      try {
+        await updateStockAfterOrder(cartItems);
+      } catch (stockError) {
+        console.error('Stock update failed:', stockError);
+        // Pokračujeme i když sklad selže
+      }
 
       // Připrav HTML položek a dopad (impact)
       const itemsHTML = renderItemsHTML(orderData.items || []);
