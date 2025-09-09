@@ -322,9 +322,11 @@
       const subjectCustomer = `Potvrzení objednávky #${orderData.order_number}`;
       const subjectAdmin = `Nová objednávka #${orderData.order_number}`;
 
+      // Definovat cartItems pro oba e-maily
+      const cartItems = orderData.items || [];
+
       // Odeslat e-mail zákazníkovi přes Resend
       try {
-        const cartItems = orderData.items || [];
         const customerHtml = window.EmailHelper.generateCustomerEmail({
           ...orderData,
           items: cartItems
