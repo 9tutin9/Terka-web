@@ -276,6 +276,7 @@
 
       // Odečteme sklad po úspěšném odeslání objednávky
       try {
+        const cartItems = orderData.items || [];
         await updateStockAfterOrder(cartItems);
       } catch (stockError) {
         console.error('Stock update failed:', stockError);
