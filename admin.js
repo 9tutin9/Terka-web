@@ -384,11 +384,21 @@
 
             // Render address button
             let addressHtml = '';
+            console.log('Order data:', order); // Debug
             if (order.address_line || order.address_city || order.address_zip) {
               addressHtml = `
                 <div style="margin-top: 8px;">
                   <button class="btn btn-outline" onclick="showOrderAddress('${order.id || order.order_number}')" style="font-size: 12px; padding: 4px 8px;">
                     📍 Adresa
+                  </button>
+                </div>
+              `;
+            } else {
+              // Debug - zobraz i když nemá adresu
+              addressHtml = `
+                <div style="margin-top: 8px;">
+                  <button class="btn btn-outline" onclick="showOrderAddress('${order.id || order.order_number}')" style="font-size: 12px; padding: 4px 8px; background: #ffeb3b;">
+                    📍 Adresa (debug)
                   </button>
                 </div>
               `;
