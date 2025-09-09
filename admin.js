@@ -376,7 +376,7 @@
                 <div class="order-products">
                   ${order.items.map(item => `
                     <div class="order-product">
-                      <img src="${item.image || '/images/placeholder.jpg'}" alt="${item.name}" onerror="this.src='/images/placeholder.jpg'">
+                      <img src="${item.image || 'images/detidetem.logo.webp'}" alt="${item.name}" onerror="this.src='images/detidetem.logo.webp'">
                       <span>${item.name}</span>
                       <span class="qty">${item.qty}x</span>
                     </div>
