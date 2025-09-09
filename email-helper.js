@@ -75,7 +75,7 @@ window.EmailHelper = {
                 box-shadow: 0 8px 20px rgba(0, 119, 182, 0.3);
               }
               
-              .logo { max-width: 120px; height: auto; filter: brightness(0) invert(1); }
+              .logo { max-width: 150px; height: auto; filter: brightness(0) invert(1); }
               
               .order-info { 
                 background: rgba(0, 119, 182, 0.1); 
@@ -120,6 +120,15 @@ window.EmailHelper = {
                 margin: 15px 0; 
                 border: 1px solid rgba(255, 183, 3, 0.3);
                 box-shadow: 0 4px 12px rgba(255, 183, 3, 0.2);
+                color: #1a1a1a !important;
+              }
+              
+              .highlight h3 {
+                color: #1a1a1a !important;
+              }
+              
+              .highlight p {
+                color: #1a1a1a !important;
               }
               
               h1, h2, h3 { font-family: 'Poppins', sans-serif; font-weight: 600; }
@@ -138,12 +147,25 @@ window.EmailHelper = {
               }
               
               .item-row:last-child { border-bottom: none; margin-bottom: 0; }
+              
+              /* Dark mode support */
+              @media (prefers-color-scheme: dark) {
+                .highlight {
+                  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+                  color: #000000 !important;
+                }
+                
+                .highlight h3,
+                .highlight p {
+                  color: #000000 !important;
+                }
+              }
           </style>
       </head>
       <body>
           <div class="email-container">
               <div class="header">
-                  <img src="https://www.detidetem.eu/images/detilogo.webp" alt="Děti dětem" class="logo">
+                  <img src="https://www.detidetem.eu/images/detidetem.logo.png" alt="Děti dětem" class="logo">
                   <h1>Děkujeme za vaši objednávku!</h1>
               </div>
 
@@ -233,7 +255,7 @@ window.EmailHelper = {
                 box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
               }
               
-              .logo { max-width: 120px; height: auto; filter: brightness(0) invert(1); }
+              .logo { max-width: 150px; height: auto; filter: brightness(0) invert(1); }
               
               .order-info { 
                 background: rgba(239, 68, 68, 0.1); 
@@ -295,12 +317,25 @@ window.EmailHelper = {
               }
               
               .item-row:last-child { border-bottom: none; margin-bottom: 0; }
+              
+              /* Dark mode support */
+              @media (prefers-color-scheme: dark) {
+                .highlight {
+                  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+                  color: #000000 !important;
+                }
+                
+                .highlight h3,
+                .highlight p {
+                  color: #000000 !important;
+                }
+              }
           </style>
       </head>
       <body>
           <div class="email-container">
               <div class="header">
-                  <img src="https://www.detidetem.eu/images/detilogo.webp" alt="Děti dětem" class="logo">
+                  <img src="https://www.detidetem.eu/images/detidetem.logo.png" alt="Děti dětem" class="logo">
                   <h1>🚨 Nová objednávka #${data.order_number}</h1>
               </div>
 
