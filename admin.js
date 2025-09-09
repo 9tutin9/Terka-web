@@ -370,8 +370,8 @@
             const date = new Date(order.timestamp || order.created_at || 0);
             const dateStr = date.toLocaleDateString('cs-CZ') + ' ' + date.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
             
-            // Střídavé barvy řádků
-            const rowBgColor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';
+            // Střídavé barvy řádků - každá druhá tmavší
+            const rowBgColor = index % 2 === 0 ? '#ffffff' : '#e9ecef';
             
             // Render products button
             let productsHtml = '';
