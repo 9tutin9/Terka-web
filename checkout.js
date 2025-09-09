@@ -308,9 +308,44 @@
       const charityNote = 'Děkujeme, díky této objednávce přispíváte na jídlo pro děti v nouzi.';
       const unit = impactMeals === 1 ? 'jídlo' : (impactMeals < 5 ? 'jídla' : 'jídel');
       const impactLine = `Odhadovaný dopad: ${impactMeals} ${unit} (při ${costPerMealCZK} Kč/jídlo).`;
-      const subjectCustomer = `Děkujeme za objednávku #${orderData.order_number}`;
+      const subjectCustomer = `Potvrzení objednávky #${orderData.order_number}`;
       const subjectAdmin = `Nová objednávka #${orderData.order_number}`;
 
+      // Odeslat e-mail zákazníkovi přes Resend
+      try {
+        const customerHtml = window.EmailHelper.generateCustomerEmail({
+          ...orderData,
+          items: cartItems
+        });
+        
+        await window.EmailHelper.sendEmail(
+          orderData.customer_email,
+          subjectCustomer,
+          customerHtml
+        );
+        console.log("✅ E-mail zákazníkovi odeslán přes Resend");
+      } catch (emailError) { 
+        console.error("❌ Chyba e-mail zákazníkovi:", emailError); 
+      }
+
+      // Odeslat e-mail adminovi přes Resend
+      try {
+        const adminHtml = window.EmailHelper.generateAdminEmail({
+          ...orderData,
+          items: cartItems
+        });
+        
+        await window.EmailHelper.sendEmail(
+          cfg.ADMIN_EMAIL,
+          subjectAdmin,
+          adminHtml
+        );
+        console.log("✅ E-mail adminovi odeslán přes Resend");
+      } catch (emailError) { 
+        console.error("❌ Chyba e-mail adminovi:", emailError); 
+      }
+
+      // Fallback pro starý EmailJS (pokud je potřeba)
       if (cfg.EMAILJS_PUBLIC_KEY && cfg.EMAILJS_SERVICE_ID && cfg.EMAILJS_TEMPLATE_CUSTOMER) {
         try {
           await emailjs.send(

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview e-mailových šablon - Děti dětem</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .preview-container { max-width: 1200px; margin: 0 auto; }
+        .preview-section { background: white; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .preview-title { color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .email-frame { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .email-header { background: #007bff; color: white; padding: 10px; font-weight: bold; }
+        .email-content { height: 600px; overflow-y: auto; }
+        .tabs { display: flex; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; background: #e9ecef; border: 1px solid #ddd; cursor: pointer; margin-right: 5px; }
+        .tab.active { background: #007bff; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>📧 Preview e-mailových šablon</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('customer')">Zákaznický e-mail</div>
+            <div class="tab" onclick="showTab('admin')">Admin e-mail</div>
+        </div>
+
+        <div id="customer" class="tab-content active">
+            <div class="preview-section">
+                <h2 class="preview-title">Zákaznický e-mail - Potvrzení objednávky</h2>
+                <div class="email-frame">
+                    <div class="email-header">📧 Zákaznický e-mail</div>
+                    <div class="email-content" id="customer-email"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin" class="tab-content">
+            <div class="preview-section">
+                <h2 class="preview-title">Admin e-mail - Nová objednávka</h2>
+                <div class="email-frame">
+                    <div class="email-header">📧 Admin e-mail</div>
+                    <div class="email-content" id="admin-email"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test data
+        const testData = {
+            order_number: "20250109001",
+            amount: 207,
+            vs: "7193501961",
+            customer_name: "Marie Svobodová",
+            customer_email: "marie.svobodova@email.cz",
+            customer_phone: "+420 777 123 456",
+            address_line: "Hlavní 268",
+            address_city: "Dolní Životice",
+            address_zip: "74756",
+            payment_message: "Děkuji za krásný náramek!",
+            delivery_note: "Prosím doručit do 15:00",
+            qr_png: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2ZmZiIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPk1vY2t1cCBRUiBjb2RlPC90ZXh0Pjwvc3ZnPg==",
+            items: [
+                { name: "Náramek lásky", qty: 2, price: 69, size: "M" },
+                { name: "Náramek naděje", qty: 1, price: 69, size: "L" }
+            ]
+        };
+
+        // Email helper functions
+        function generateItemsHTML(items) {
+            if (!items || !Array.isArray(items)) return '<p>Žádné položky</p>';
+            
+            return items.map(item => `
+                <div style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
+                    <div style="flex: 1;">
+                        <strong>${item.name || 'Náramek'}</strong>
+                        ${item.size ? `<br><small>Velikost: ${item.size}</small>` : ''}
+                    </div>
+                    <div style="text-align: right;">
+                        <div>${item.qty}x</div>
+                        <div><strong>${(item.price || 69).toLocaleString('cs-CZ')} Kč</strong></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateCustomerEmail(data) {
+            const itemsHTML = generateItemsHTML(data.items);
+            const currentDate = new Date().toLocaleDateString('cs-CZ');
+            
+            // Výpočet dopadu na děti v Jemenu
+            const costPerMealCZK = 23;
+            const meals = Math.max(1, Math.floor((Number(data.amount) || 0) / costPerMealCZK));
+            const impactMeals = meals;
+            const unit = impactMeals === 1 ? 'jídlo' : (impactMeals < 5 ? 'jídla' : 'jídel');
+            const impactLine = `Odhadovaný dopad: ${impactMeals} ${unit} (při ${costPerMealCZK} Kč/jídlo).`;
+            
+            return `
+                <!DOCTYPE html>
+                <html lang="cs">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Potvrzení objednávky - Děti dětem</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { text-align: center; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                        .logo { max-width: 200px; height: auto; }
+                        .order-info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .items { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .qr-section { text-align: center; margin: 20px 0; }
+                        .qr-code { max-width: 200px; height: auto; }
+                        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; }
+                        .highlight { background: #fff3cd; padding: 10px; border-radius: 5px; margin: 15px 0; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <img src="https://www.detidetem.eu/images/detidetem.logo.webp" alt="Děti dětem" class="logo">
+                        <h1>Děkujeme za vaši objednávku!</h1>
+                    </div>
+
+                    <div class="order-info">
+                        <h2>📋 Detaily objednávky</h2>
+                        <p><strong>Číslo objednávky:</strong> ${data.order_number}</p>
+                        <p><strong>Částka:</strong> ${data.amount} Kč</p>
+                        <p><strong>Variabilní symbol:</strong> ${data.vs}</p>
+                        <p><strong>Datum:</strong> ${currentDate}</p>
+                    </div>
+
+                    <div class="items">
+                        <h3>🛍️ Objednané položky</h3>
+                        ${itemsHTML}
+                    </div>
+
+                    <div class="qr-section">
+                        <h3>💳 QR platba</h3>
+                        <p>Naskenujte QR kód mobilní aplikací vaší banky:</p>
+                        <img src="${data.qr_png}" alt="QR kód pro platbu" class="qr-code">
+                        <p><strong>Variabilní symbol:</strong> ${data.vs}</p>
+                        <p><strong>Částka:</strong> ${data.amount} Kč</p>
+                    </div>
+
+                    <div class="highlight">
+                        <h3>🌍 Váš dopad</h3>
+                        <p><strong>${impactLine}</strong></p>
+                        <p>Každý nákup náramku pomáhá dětem v Jemenu. Děkujeme, díky této objednávce přispíváte na jídlo pro děti v nouzi.</p>
+                    </div>
+
+                    <div class="highlight">
+                        <h3>📚 Důležité upozornění</h3>
+                        <p>Jelikož jsme školou povinní, doručení vašeho náramku se může trochu zpozdit. Děkujeme za trpělivost!</p>
+                    </div>
+
+                    <div class="footer">
+                        <p>Děti dětem - Každý náramek pomáhá dětem v nouzi</p>
+                        <p>Web: <a href="https://www.detidetem.eu">www.detidetem.eu</a></p>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        function generateAdminEmail(data) {
+            const itemsHTML = generateItemsHTML(data.items);
+            const currentDate = new Date().toLocaleDateString('cs-CZ');
+            
+            return `
+                <!DOCTYPE html>
+                <html lang="cs">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Nová objednávka - Děti dětem</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { text-align: center; background: #dc3545; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                        .logo { max-width: 200px; height: auto; }
+                        .order-info { background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .customer-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .items { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <img src="https://www.detidetem.eu/images/detidetem.logo.webp" alt="Děti dětem" class="logo">
+                        <h1>🚨 Nová objednávka #${data.order_number}</h1>
+                    </div>
+
+                    <div class="order-info">
+                        <h2>📋 Detaily objednávky</h2>
+                        <p><strong>Číslo objednávky:</strong> ${data.order_number}</p>
+                        <p><strong>Částka:</strong> ${data.amount} Kč</p>
+                        <p><strong>Variabilní symbol:</strong> ${data.vs}</p>
+                        <p><strong>Datum:</strong> ${currentDate}</p>
+                    </div>
+
+                    <div class="customer-info">
+                        <h3>👤 Zákazník</h3>
+                        <p><strong>Jméno:</strong> ${data.customer_name}</p>
+                        <p><strong>E-mail:</strong> ${data.customer_email}</p>
+                        <p><strong>Telefon:</strong> ${data.customer_phone}</p>
+                        <p><strong>Adresa:</strong> ${data.address_line}, ${data.address_city} ${data.address_zip}</p>
+                        ${data.payment_message ? `<p><strong>Zpráva pro příjemce:</strong> ${data.payment_message}</p>` : ''}
+                        ${data.delivery_note ? `<p><strong>Poznámka k dodání:</strong> ${data.delivery_note}</p>` : ''}
+                    </div>
+
+                    <div class="items">
+                        <h3>🛍️ Objednané položky</h3>
+                        ${itemsHTML}
+                    </div>
+
+                    <div class="footer">
+                        <p>Děti dětem - Admin panel</p>
+                        <p>Web: <a href="https://www.detidetem.eu/admin.html">www.detidetem.eu/admin.html</a></p>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Generate and display emails
+        document.getElementById('customer-email').innerHTML = generateCustomerEmail(testData);
+        document.getElementById('admin-email').innerHTML = generateAdminEmail(testData);
+    </script>
+</body>
+</html>
