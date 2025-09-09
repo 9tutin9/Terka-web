@@ -639,29 +639,39 @@
             text-align: center;
             font-size: 12px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            position: relative;
           }
           .logo-section {
             position: absolute;
             top: 2mm;
             right: 2mm;
-            width: 20mm;
-            height: 20mm;
+            width: 15mm;
+            height: 15mm;
             background: white;
             border: 2px solid #6c5ce7;
             border-radius: 8px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          }
+          .logo-section img {
+            width: 12mm;
+            height: 12mm;
+            object-fit: contain;
+          }
+          .logo-text {
+            font-size: 5px;
             font-weight: bold;
             color: #6c5ce7;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 0.5mm;
           }
           .address {
             padding: 3mm;
             line-height: 1.3;
-            margin-right: 22mm;
+            text-align: center;
+            margin-top: 2mm;
           }
           .customer-name {
             font-weight: bold;
@@ -681,13 +691,15 @@
           .order-info {
             position: absolute;
             bottom: 2mm;
-            right: 2mm;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 8px;
             color: #636e72;
             background: rgba(255,255,255,0.8);
             padding: 2mm;
             border-radius: 4px;
             border: 1px solid #ddd;
+            text-align: center;
           }
         </style>
       </head>
@@ -696,10 +708,8 @@
           DODACÍ ŠTÍTEK - ${order.order_number}
         </div>
         <div class="logo-section">
-          <img src="images/detidetem.logo.webp" alt="Děti dětem" style="width: 16mm; height: 16mm; object-fit: contain;">
-          <div style="font-size: 6px; font-weight: bold; color: #6c5ce7; margin-top: 1mm;">
-            Děti dětem
-          </div>
+          <img src="images/detidetem.logo.webp" alt="Děti dětem">
+          <div class="logo-text">Děti dětem</div>
         </div>
         <div class="address">
           <div class="customer-name">${order.customer_name || 'N/A'}</div>
