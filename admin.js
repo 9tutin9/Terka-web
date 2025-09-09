@@ -413,14 +413,25 @@
     if (!requireSB()) return;
     
     try {
-      const { error } = await window.sb
+      // Zkus aktualizovat podle id
+      let { error } = await window.sb
         .from('orders')
         .update({ shipped: shipped })
         .eq('id', orderId);
         
+      // Pokud selže, zkus podle order_number
+      if (error) {
+        console.log('Zkouším podle order_number...');
+        const result = await window.sb
+          .from('orders')
+          .update({ shipped: shipped })
+          .eq('order_number', orderId);
+        error = result.error;
+      }
+        
       if (error) {
         console.error('Chyba při aktualizaci:', error);
-        alert('Chyba při aktualizaci stavu odeslání');
+        alert('Chyba při aktualizaci stavu odeslání: ' + error.message);
       } else {
         console.log('Stav odeslání aktualizován');
         // Refresh orders to show updated status
@@ -428,7 +439,7 @@
       }
     } catch (err) {
       console.error('Chyba:', err);
-      alert('Chyba při aktualizaci stavu odeslání');
+      alert('Chyba při aktualizaci stavu odeslání: ' + err.message);
     }
   }
 
