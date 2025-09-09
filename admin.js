@@ -362,13 +362,16 @@
           </tr>
         </thead>
         <tbody>
-          ${filteredOrders.map(order => {
+          ${filteredOrders.map((order, index) => {
             const isPaid = order.paid === true || order.paid === 'true';
             const isShipped = order.shipped === true || order.shipped === 'true';
             const paidStyle = isPaid ? 'color:#10b981;font-weight:600' : 'color:#dc2626;font-weight:600';
             const paidText = isPaid ? 'Zaplaceno' : 'Nezaplaceno';
             const date = new Date(order.timestamp || order.created_at || 0);
             const dateStr = date.toLocaleDateString('cs-CZ') + ' ' + date.toLocaleTimeString('cs-CZ', {hour: '2-digit', minute: '2-digit'});
+            
+            // Střídavé barvy řádků
+            const rowBgColor = index % 2 === 0 ? '#ffffff' : '#f8f9fa';
             
             // Render products button
             let productsHtml = '';
@@ -406,7 +409,7 @@
             }
             
             return `
-              <tr style="border-bottom:1px solid #dee2e6">
+              <tr style="border-bottom:1px solid #dee2e6; background-color: ${rowBgColor};">
                 <td style="padding:12px;font-weight:600">#${order.order_number || 'N/A'}</td>
                 <td style="padding:12px">
                   <div>${order.customer_name || 'N/A'}</div>
